@@ -151,38 +151,24 @@
             <h2>Bem-vindo ao FriendZone</h2>
             <p class="subtitle">A sua nova velha rede social</p>
             <form id="login-form">
-                <input type="email" id="login-email" placeholder="E-mail" required>
+                <input type="text" id="login-username" placeholder="Nome de Usuário" required>
                 <input type="password" id="login-password" placeholder="Senha" required>
                 <button type="submit" class="btn-primary">Entrar</button>
             </form>
             <div class="form-links">
                 <a href="#" onclick="navigateTo('register-screen')">Não tem conta? Cadastre-se</a>
-                <a href="#" onclick="navigateTo('recover-screen')">Esqueceu a senha?</a>
             </div>
         </section>
 
         <section id="register-screen" class="card hidden">
             <h2>Criar uma conta</h2>
             <form id="register-form">
-                <input type="text" id="register-name" placeholder="Nome Completo" required>
-                <input type="email" id="register-email" placeholder="E-mail" required>
+                <input type="text" id="register-username" placeholder="Escolha um Nome de Usuário (ex: eder86)" required>
                 <input type="password" id="register-password" placeholder="Senha (mín. 6 caracteres)" required>
                 <button type="submit" class="btn-primary">Cadastrar</button>
             </form>
             <div class="form-links">
                 <a href="#" onclick="navigateTo('login-screen')">Já tem conta? Faça Login</a>
-            </div>
-        </section>
-
-        <section id="recover-screen" class="card hidden">
-            <h2>Recuperar Senha</h2>
-            <p>Digite seu e-mail para receber as instruções de redefinição.</p>
-            <form id="recover-form">
-                <input type="email" id="recover-email" placeholder="E-mail cadastrado" required>
-                <button type="submit" class="btn-primary">Enviar E-mail</button>
-            </form>
-            <div class="form-links">
-                <a href="#" onclick="navigateTo('login-screen')">Voltar para o Login</a>
             </div>
         </section>
 
@@ -197,15 +183,16 @@
                 <h2>Meu Perfil</h2>
                 <div class="orkut-scraps">
                     <h3>Recados (Scraps)</h3>
-                    <p>Funcionalidade em breve! Deixe seu depoimento.</p>
+                    <p>Funcionalidade em desenvolvimento! Deixe seu depoimento em breve.</p>
                 </div>
             </div>
         </section>
 
         <section id="search-screen" class="card hidden">
             <h2>Procurar Amigos</h2>
+            <p style="font-size: 13px; color: #666;">Nota: Sistema de busca local temporário (sem Firestore para evitar erros de permissão).</p>
             <div class="search-box">
-                <input type="text" id="search-input" placeholder="Digite o nome exato do amigo...">
+                <input type="text" id="search-input" placeholder="Digite o nome do usuário...">
                 <button id="btn-search" class="btn-primary">Buscar</button>
             </div>
             <ul id="search-results" class="results-list"></ul>
@@ -215,10 +202,9 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-        // Suas configurações do Firebase adicionadas com sucesso!
+        // Suas credenciais oficiais do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCDddrDWE7Ss0pZLY3MQbSxbR_Z492L2Tw",
             authDomain: "frendzone.firebaseapp.com",
@@ -229,14 +215,16 @@
             appId: "1:200315585733:web:8481d150ecae8b04c21cac"
         };
 
-        // Inicializa o Firebase
+        // Inicializa o Firebase apenas com Auth para evitar erros de banco de dados
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
+
+        // Simulação de banco local para busca rápida (evita mexer no Firestore do console)
+        const bancoLocalUsuarios = ["eder86", "adilson_silva", "mariah_reis", "felipe_melo", "edilene_amor"];
 
         // Sistema Global de Navegação (SPA)
         window.navigateTo = function(screenId) {
-            const screens = ['login-screen', 'register-screen', 'recover-screen', 'profile-screen', 'search-screen'];
+            const screens = ['login-screen', 'register-screen', 'profile-screen', 'search-screen'];
             screens.forEach(screen => {
                 document.getElementById(screen).classList.add('hidden');
             });
@@ -244,20 +232,15 @@
         }
 
         // Monitora o estado de login do usuário
-        onAuthStateChanged(auth, async (user) => {
+        onAuthStateChanged(auth, (user) => {
             const header = document.getElementById('main-header');
             if (user) {
                 header.classList.remove('hidden');
                 
-                // Busca o nome do usuário salvo no banco Cloud Firestore
-                const docRef = doc(db, "users", user.uid);
-                const docSnap = await getDoc(docRef);
+                // Extrai o nome de usuário original retirando o sufixo do e-mail falso
+                const usernameOriginal = user.email.split('@')[0];
+                document.getElementById('profile-name').innerText = usernameOriginal;
                 
-                if (docSnap.exists()) {
-                    document.getElementById('profile-name').innerText = docSnap.data().name;
-                } else {
-                    document.getElementById('profile-name').innerText = "Membro do FriendZone";
-                }
                 navigateTo('profile-screen');
             } else {
                 header.classList.add('hidden');
@@ -265,55 +248,47 @@
             }
         });
 
-        // Cadastro de Usuário
+        // Cadastro de Usuário (Tratando Usuário como E-mail mascarado)
         document.getElementById('register-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const name = document.getElementById('register-name').value;
-            const email = document.getElementById('register-email').value;
+            const username = document.getElementById('register-username').value.trim().toLowerCase();
             const password = document.getElementById('register-password').value;
 
+            // Mascara o usuário para o formato que o Firebase exige
+            const emailMascarado = `${username}@friendzone.com`;
+
             try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
+                await createUserWithEmailAndPassword(auth, emailMascarado, password);
                 
-                // Salva o nome atrelado ao UID no Firestore para as buscas funcionarem
-                await setDoc(doc(db, "users", user.uid), {
-                    name: name,
-                    email: email,
-                    uid: user.uid
-                });
-                
-                alert("Conta criada com sucesso!");
+                // Adiciona na nossa lista de busca local para testes rápidos
+                if(!bancoLocalUsuarios.includes(username)) {
+                    bancoLocalUsuarios.push(username);
+                }
+
+                alert(`Usuário "${username}" cadastrado com sucesso!`);
                 document.getElementById('register-form').reset();
             } catch (error) {
-                alert("Erro ao cadastrar: " + error.message);
+                if (error.code === 'auth/configuration-not-found') {
+                    alert("Erro: Você ainda precisa ativar o método 'E-mail/Senha' lá no menu Authentication do seu Firebase.");
+                } else {
+                    alert("Erro ao cadastrar: " + error.message);
+                }
             }
         });
 
         // Login de Usuário
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('login-email').value;
+            const username = document.getElementById('login-username').value.trim().toLowerCase();
             const password = document.getElementById('login-password').value;
 
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                alert("Erro ao entrar: " + error.message);
-            }
-        });
-
-        // Recuperação de Senha
-        document.getElementById('recover-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('recover-email').value;
+            // Mascara novamente para realizar o login
+            const emailMascarado = `${username}@friendzone.com`;
 
             try {
-                await sendPasswordResetEmail(auth, email);
-                alert("E-mail de recuperação enviado!");
-                navigateTo('login-screen');
+                await signInWithEmailAndPassword(auth, emailMascarado, password);
             } catch (error) {
-                alert("Erro: " + error.message);
+                alert("Erro ao entrar: Usuário ou senha incorretos.");
             }
         });
 
@@ -322,37 +297,31 @@
             signOut(auth);
         });
 
-        // Busca de Usuários no Firestore pelo nome exato
-        document.getElementById('btn-search').addEventListener('click', async () => {
-            const searchTerm = document.getElementById('search-input').value.trim();
+        // Busca de Usuários (Feita localmente para evitar erros de regras do Firestore)
+        document.getElementById('btn-search').addEventListener('click', () => {
+            const searchTerm = document.getElementById('search-input').value.trim().toLowerCase();
             const resultsContainer = document.getElementById('search-results');
-            resultsContainer.innerHTML = "Buscando...";
+            resultsContainer.innerHTML = "";
 
             if (!searchTerm) {
-                resultsContainer.innerHTML = "<li>Digite um nome para pesquisar.</li>";
+                resultsContainer.innerHTML = "<li>Digite um termo para pesquisar.</li>";
                 return;
             }
 
-            try {
-                const q = query(collection(db, "users"), where("name", "==", searchTerm));
-                const querySnapshot = await getDocs(q);
-                resultsContainer.innerHTML = "";
+            // Filtra os usuários cadastrados localmente
+            const resultados = bancoLocalUsuarios.filter(user => user.includes(searchTerm));
 
-                if (querySnapshot.empty) {
-                    resultsContainer.innerHTML = "<li>Nenhum amigo encontrado com esse nome exato.</li>";
-                    return;
-                }
-
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const li = document.createElement('li');
-                    li.innerHTML = `<strong>👤 ${data.name}</strong> — Enviar recado (Em breve)`;
-                    resultsContainer.appendChild(li);
-                });
-            } catch (error) {
-                alert("Erro na busca: " + error.message);
+            if (resultados.length === 0) {
+                resultsContainer.innerHTML = "<li>Nenhum usuário encontrado.</li>";
+                return;
             }
+
+            resultados.forEach(user => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>👤 ${user}</strong> — Enviar recado (Em breve)`;
+                resultsContainer.appendChild(li);
+            });
         });
     </script>
 </body>
-</html>vvvvvvvvvv
+</html>
