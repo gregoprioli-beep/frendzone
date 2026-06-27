@@ -7,349 +7,309 @@
     
     <style>
         :root {
-            --bg-color: #E5EDF5;
+            --bg-color: #F0F4F8;
             --card-bg: #FFFFFF;
-            --orkut-blue: #4B6C9E;
-            --orkut-light-blue: #F2F5F9;
-            --text-color: #333333;
-            --border-color: #C0C0C0;
-            --orkut-magenta: #ED1C24;
+            --primary-blue: #1877F2;
+            --orkut-blue: #4A90E2;
+            --dark-blue: #2C3E50;
+            --text-color: #334E68;
+            --border-color: #D3E2F2;
+            --hover-blue: #166FE5;
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 1000px;
-            margin: 30px auto;
+            max-width: 1050px;
+            margin: 20px auto;
             padding: 0 20px;
         }
 
         .hidden { display: none !important; }
 
-        /* Estilização da Logo FriendZone */
-        .logo-container {
-            text-align: center;
-            margin-bottom: 20px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .main-logo {
-            font-family: 'Arial Black', Gadget, sans-serif;
-            font-size: 38px;
-            color: var(--orkut-blue);
-            margin: 0;
-            text-shadow: 1px 1px 0px #fff;
-        }
-        .main-logo span {
-            color: var(--orkut-magenta);
+        @keyframes storyProgress {
+            from { width: 0%; }
+            to { width: 100%; }
         }
 
-        /* Header Principal */
+        .fade-in { animation: fadeIn 0.35s ease forwards; }
+
         header {
-            background-color: var(--orkut-blue);
-            padding: 12px 20px;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-blue) 100%);
+            padding: 10px 20px;
             color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-
         .header-container {
-            max-width: 1000px;
+            max-width: 1050px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
-        header .header-logo {
-            font-family: 'Arial Black', sans-serif;
-            font-size: 22px;
-            color: white;
-            margin: 0;
+        .app-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
         }
-        header .header-logo span {
-            color: #FFD700; /* Destaque dourado/amarelo para o "Zone" no topo */
+        .app-logo img {
+            height: 45px;
+            object-fit: contain;
+        }
+        .app-logo h1 {
+            font-size: 22px;
+            margin: 0;
+            color: white;
+            font-family: 'Arial Black', sans-serif;
         }
 
         header nav button {
-            background: transparent;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            margin-left: 15px;
-            font-size: 14px;
+            background: transparent; border: none; color: rgba(255,255,255,0.9);
+            cursor: pointer; font-weight: 600; margin-left: 10px; font-size: 14px;
+            padding: 8px 14px; border-radius: 6px; transition: all 0.2s;
         }
-        header nav button:hover { text-decoration: underline; }
+        header nav button:hover { background: rgba(255,255,255,0.15); color: white; }
 
-        /* Cards Gerais */
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 4px;
+            border-radius: 12px;
             padding: 20px;
             margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        h2, h3 { color: var(--orkut-blue); margin-top: 0; }
-        .subtitle { color: #777; margin-top: -10px; margin-bottom: 20px; font-size: 14px; }
-
-        /* Elementos de Formulário */
-        input, textarea, select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
+        /* STORIES AREA */
+        .stories-container {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
         }
-
-        .btn-primary {
-            background-color: var(--orkut-blue);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
+        .story-card {
+            min-width: 100px;
+            height: 150px;
+            border-radius: 12px;
+            background: #E4E9F0;
+            position: relative;
             cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-primary:hover { opacity: 0.9; }
-
-        .form-links { margin-top: 15px; display: flex; justify-content: space-between; font-size: 14px; }
-        .form-links a { color: var(--orkut-blue); text-decoration: none; }
-
-        /* Layout Lateral */
-        .profile-layout {
-            display: grid;
-            grid-template-columns: 260px 1fr;
-            gap: 20px;
-        }
-
-        .profile-sidebar { text-align: center; }
-        
-        /* Container da foto de perfil */
-        .profile-avatar-container {
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 15px;
-            border: 1px solid var(--border-color);
-            background: #e0e0e0;
-            border-radius: 4px;
             overflow: hidden;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 2px solid var(--primary-blue);
+            transition: transform 0.2s;
         }
-        .profile-avatar-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .story-card:hover { transform: scale(1.03); }
+        .story-card.add-story { border: 2px dashed #9FB3C8; background: #F8FAFC; justify-content: center; align-items: center; }
+        .story-name { font-size: 11px; font-weight: bold; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); z-index: 2; text-align: center;}
+        
+        /* MODAL STORIES */
+        .story-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 1000; display: flex;
+            justify-content: center; align-items: center; flex-direction: column;
         }
-        .profile-avatar-placeholder {
-            font-size: 70px;
-            color: #888;
-        }
+        .story-modal-content { width: 90%; max-width: 380px; height: 550px; background: #111; border-radius: 12px; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center;}
+        .story-progress-bar { position: absolute; top: 10px; left: 5%; width: 90%; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; z-index: 10; }
+        .story-progress-fill { height: 100%; background: white; width: 0%; }
 
-        .sidebar-menu {
-            text-align: left;
-            margin-top: 20px;
+        /* LAYOUT PERFIL */
+        .profile-layout { display: grid; grid-template-columns: 280px 1fr; gap: 20px; }
+        .profile-sidebar { text-align: center; }
+        .profile-avatar-container {
+            width: 120px; height: 120px; margin: 0 auto 12px; border: 3px solid #FFF;
+            background: #E4E9F0; border-radius: 50%; overflow: hidden; display: flex;
+            align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
+        .profile-avatar-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        .views-counter { background: #E6EFFC; color: var(--primary-blue); font-size: 13px; font-weight: bold; padding: 8px; border-radius: 6px; margin-bottom: 12px; }
+        .orkut-ratings { display: flex; justify-content: center; gap: 8px; margin: 12px 0; background: #F8FAFC; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); }
+        .rating-item { font-size: 12px; font-weight: bold; }
+
         .sidebar-menu button {
-            display: block;
-            width: 100%;
-            background: none;
-            border: none;
-            padding: 8px 10px;
-            text-align: left;
-            color: var(--orkut-blue);
-            cursor: pointer;
-            border-bottom: 1px dashed var(--border-color);
-            font-size: 14px;
+            display: block; width: 100%; background: none; border: none; padding: 11px 12px;
+            text-align: left; color: #486581; cursor: pointer; border-radius: 6px;
+            font-size: 14px; font-weight: 500; margin-bottom: 2px; transition: all 0.15s;
         }
-        .sidebar-menu button:hover { background-color: var(--orkut-light-blue); }
+        .sidebar-menu button:hover { background-color: #E6EFFC; color: var(--primary-blue); padding-left: 16px; }
 
-        /* Sistema de Abas */
-        .tab-box {
-            display: flex;
-            border-bottom: 2px solid var(--orkut-blue);
-            margin-bottom: 15px;
+        /* CONFIGS SETTINGS FACEBOOK STYLE */
+        .fb-settings-layout { display: grid; grid-template-columns: 240px 1fr; gap: 15px; }
+        .fb-settings-nav { border-right: 1px solid var(--border-color); padding-right: 15px; }
+        .fb-settings-nav button {
+            width: 100%; text-align: left; background: none; border: none; padding: 10px;
+            border-radius: 6px; cursor: pointer; font-size: 14px; margin-bottom: 4px; font-weight: 500;
         }
-        .tab-btn {
-            background: #e0e0e0;
-            border: 1px solid var(--border-color);
-            border-bottom: none;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #555;
-            margin-right: 4px;
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
-        }
-        .tab-btn.active {
-            background: var(--orkut-blue);
-            color: white;
-            border-color: var(--orkut-blue);
-        }
+        .fb-settings-nav button.active { background: #E7F3FF; color: var(--primary-blue); font-weight: 600; }
+        .fb-setting-section { display: none; }
+        .fb-setting-section.active { display: block; }
 
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        /* CAMPOS */
+        input, textarea, select {
+            width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid var(--border-color);
+            border-radius: 6px; box-sizing: border-box; background-color: #F8FAFC; font-family: inherit;
+        }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary-blue); background: #FFF; }
+        .btn-primary { background-color: var(--primary-blue); color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-primary:hover { background-color: var(--hover-blue); }
 
-        .post-item {
-            background: var(--orkut-light-blue);
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 10px;
-            border-radius: 4px;
-        }
-        .post-meta { font-size: 11px; color: #666; margin-bottom: 6px; }
+        /* MULTIMÍDIA E OUTPUTS */
+        .post-item { background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .post-media-container { margin-top: 10px; border-radius: 6px; overflow: hidden; background: #000; max-height: 350px; display: flex; justify-content: center; align-items: center; }
+        .post-media-container img, .post-media-container video { max-width: 100%; max-height: 350px; object-fit: contain; }
+        .post-media-container audio { width: 100%; padding: 10px; }
 
-        /* Grid de Álbuns */
-        .album-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        .album-card {
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            text-align: center;
-            background: #fdfdfd;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        .album-card:hover { border-color: var(--orkut-blue); }
-        .album-icon { font-size: 40px; }
+        .album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+        .album-card { background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: background 0.2s; }
+        .album-card:hover { background: #E6EFFC; }
+        .photo-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-top: 15px; }
+        .photo-gallery img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); }
 
-        .photo-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .photo-gallery img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-        }
-
-        /* Messenger Box */
-        .chat-box {
-            border: 1px solid var(--border-color);
-            height: 250px;
-            overflow-y: auto;
-            background: #fafafa;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 4px;
-        }
-        .chat-msg { margin-bottom: 8px; font-size: 14px; }
-        .chat-msg.me { color: var(--orkut-blue); font-weight: bold; }
+        .media-upload-options { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+        .media-upload-options label { background: #E4E9F0; padding: 6px 12px; border-radius: 6px; font-size: 13px; cursor: pointer; font-weight: 500; }
+        .media-upload-options label:hover { background: #CBD5E1; }
+        
+        .logo-login-box { text-align: center; margin-bottom: 20px; }
+        .logo-login-box img { max-width: 150px; }
     </style>
 </head>
 <body>
 
     <header id="main-header" class="hidden">
         <div class="header-container">
-            <h1 class="header-logo">Friend<span>Zone</span></h1>
+            <div class="app-logo" onclick="changeMainScreen('profile-view')">
+                <img src="https://png.pngtree.com/png-vector/20230213/ourmid/pngtree-friendzone-lineart-hd-symbol-png-image_6595048.png" alt="Logo">
+                <h1>FriendZone</h1>
+            </div>
             <nav>
-                <button onclick="changeMainScreen('profile-view')">Meu Perfil</button>
-                <button onclick="changeMainScreen('search-friends')">Buscar Amigos</button>
+                <button onclick="changeMainScreen('profile-view')">Feed</button>
+                <button onclick="changeMainScreen('tribos-view')">Tribos</button>
+                <button onclick="changeMainScreen('search-friends')">Membros</button>
                 <button id="btn-logout">Sair</button>
             </nav>
         </div>
     </header>
 
     <main class="container">
-        
-        <div id="auth-logo-box" class="logo-container">
-            <h1 class="main-logo">Friend<span>Zone</span></h1>
+        <div id="auth-logo-box" class="logo-login-box">
+            <img src="https://png.pngtree.com/png-vector/20230213/ourmid/pngtree-friendzone-lineart-hd-symbol-png-image_6595048.png" alt="Logo Principal">
+            <h1 style="margin-top: 5px; color: var(--dark-blue);">FriendZone</h1>
         </div>
 
-        <section id="screen-login" class="card">
-            <h2>Bem-vindo ao FriendZone</h2>
-            <p class="subtitle">A sua nova velha rede social em uma única página</p>
+        <!-- LOGIN -->
+        <section id="screen-login" class="card fade-in">
+            <h2>Logar na Rede</h2>
             <form id="login-form">
                 <input type="text" id="login-username" placeholder="Nome de Usuário" required>
                 <input type="password" id="login-password" placeholder="Senha" required>
-                <button type="submit" class="btn-primary">Entrar</button>
+                <button type="submit" class="btn-primary" style="width: 100%;">Entrar</button>
             </form>
-            <div class="form-links">
-                <a href="#" onclick="showLoginOrRegister('register')">Não tem conta? Cadastre-se</a>
-            </div>
+            <div style="text-align:center; margin-top:15px;"><a href="#" onclick="showLoginOrRegister('register')">Criar nova conta de membro</a></div>
         </section>
 
-        <section id="screen-register" class="card hidden">
-            <h2>Criar uma conta</h2>
+        <!-- CADASTRO -->
+        <section id="screen-register" class="card hidden fade-in">
+            <h2>Cadastre-se</h2>
             <form id="register-form">
-                <input type="text" id="register-username" placeholder="Nome de Usuário (ex: eder86)" required>
-                <input type="password" id="register-password" placeholder="Senha (mín. 4 caracteres)" required>
-                <button type="submit" class="btn-primary">Criar Conta</button>
+                <input type="text" id="register-username" placeholder="Escolha um Usuário" required>
+                <input type="password" id="register-password" placeholder="Defina uma Senha" required>
+                <button type="submit" class="btn-primary" style="width: 100%;">Cadastrar</button>
             </form>
-            <div class="form-links">
-                <a href="#" onclick="showLoginOrRegister('login')">Já tem conta? Faça Login</a>
-            </div>
+            <div style="text-align:center; margin-top:15px;"><a href="#" onclick="showLoginOrRegister('login')">Voltar ao Login</a></div>
         </section>
 
-        <div id="screen-dashboard" class="profile-layout hidden">
-            
+        <!-- DASHBOARD PRINCIPAL -->
+        <div id="screen-dashboard" class="profile-layout hidden fade-in">
             <aside class="profile-sidebar card">
-                <div class="profile-avatar-container" id="sidebar-avatar-box">
-                    <span class="profile-avatar-placeholder">👤</span>
-                </div>
+                <div class="profile-avatar-container" id="sidebar-avatar-box"></div>
                 <h3 id="sidebar-display-name">@usuario</h3>
-                <p id="sidebar-status" class="status">"Status temporário"</p>
+                <p id="sidebar-status" style="font-size:13px; font-style:italic; color:#627D98; margin-bottom:10px;"></p>
                 
+                <div class="views-counter">👀 Perfil visto por: <span id="view-count-number">0</span> pessoas</div>
+                <div class="orkut-ratings">
+                    <div class="rating-item">🟢 <span id="rate-trust">100%</span></div>
+                    <div class="rating-item">🧊 <span id="rate-cool">100%</span></div>
+                    <div class="rating-item">🔥 <span id="rate-sexy">100%</span></div>
+                </div>
+
                 <div class="sidebar-menu">
-                    <button onclick="changeMainScreen('profile-view')">🏠 Linha do Tempo</button>
-                    <button onclick="changeMainScreen('albums-view')">📸 Meus Álbuns</button>
-                    <button onclick="changeMainScreen('edit-profile-view')">⚙️ Editar Perfil & Priv.</button>
-                    <button onclick="changeMainScreen('messenger-view')">💬 Messenger Interno</button>
-                    <button onclick="changeMainScreen('search-friends')">🔍 Procurar Membros</button>
+                    <button onclick="changeMainScreen('profile-view')">🏠 Página Inicial / Feed</button>
+                    <button onclick="changeMainScreen('albums-view')">📸 Meus Álbuns de Fotos</button>
+                    <button onclick="changeMainScreen('tribos-view')">👥 Minhas Tribos</button>
+                    <button onclick="changeMainScreen('settings-view')">⚙️ Editar Perfil & Configurações</button>
                 </div>
             </aside>
 
+            <!-- CONTEÚDO DINÂMICO -->
             <section class="profile-main">
                 
-                <div id="sub-profile-view" class="main-sub-screen">
+                <!-- FEED E STORIES -->
+                <div id="sub-profile-view" class="main-sub-screen fade-in">
+                    <!-- Stories Shelf -->
+                    <div class="stories-container" id="stories-shelf">
+                        <div class="story-card add-story">
+                            <label for="story-file-input" style="cursor:pointer; text-align:center; display:block;">
+                                <span style="font-size:26px; font-weight:bold; color:var(--primary-blue); display:block;">+</span>
+                                <span style="font-size:11px; font-weight:bold; color:var(--text-color);">Add Story</span>
+                            </label>
+                            <input type="file" id="story-file-input" accept="image/*,video/*,audio/*" style="display:none;" onchange="publicarStoryMultimidia(this)">
+                        </div>
+                    </div>
+
                     <div class="card">
-                        <h2>Linha do Tempo</h2>
+                        <h2>No que você está pensando?</h2>
                         <form id="timeline-form">
-                            <textarea id="timeline-text" rows="2" placeholder="O que você está pensando hoje?" required></textarea>
-                            <button type="submit" class="btn-primary">Postar</button>
+                            <textarea id="timeline-text" rows="2" placeholder="Compartilhe algo novo, fotos, músicas ou vídeos..." required></textarea>
+                            
+                            <div class="media-upload-options">
+                                <span style="font-size:12px; font-weight:bold;">Anexar mídia:</span>
+                                <label for="post-media-input">📁 Selecionar Arquivo</label>
+                                <input type="file" id="post-media-input" accept="image/*,video/*,audio/*" style="display:none;" onchange="atualizarLabelMidia(this)">
+                                <span id="post-media-file-name" style="font-size:11px; color:#627D98;">Nenhum arquivo...</span>
+                            </div>
+
+                            <button type="submit" class="btn-primary" style="float:right;">Publicar no Feed</button>
+                            <div style="clear:both;"></div>
                         </form>
-                        <div id="timeline-posts" style="margin-top: 20px;"></div>
+                        <div id="timeline-posts" style="margin-top: 15px;"></div>
                     </div>
                 </div>
 
-                <div id="sub-albums-view" class="main-sub-screen hidden">
+                <!-- ÁLBUNS DE FOTOS -->
+                <div id="sub-albums-view" class="main-sub-screen hidden fade-in">
                     <div class="card">
                         <h2>Meus Álbuns de Fotos</h2>
-                        <div style="background: #F2F5F9; padding: 12px; border-radius: 4px; margin-bottom: 15px;">
-                            <h3>Criar Novo Álbum</h3>
-                            <div style="display:flex; gap:10px;">
-                                <input type="text" id="new-album-name" placeholder="Nome do álbum" style="margin-bottom:0;">
-                                <button onclick="criarAlbum()" class="btn-primary">Criar</button>
-                            </div>
+                        <div style="background:#F0F4F8; padding:10px; border-radius:8px; margin-bottom:15px; display:flex; gap:10px;">
+                            <input type="text" id="new-album-name" placeholder="Nome do novo álbum..." style="margin-bottom:0;">
+                            <button onclick="criarAlbum()" class="btn-primary">Criar Álbum</button>
                         </div>
-
-                        <div id="box-album-list">
-                            <h3>Álbuns Disponíveis</h3>
-                            <div id="grid-albuns" class="album-grid"></div>
-                        </div>
-
+                        <div id="box-album-list"><div id="grid-albuns" class="album-grid"></div></div>
+                        
                         <div id="box-inside-album" class="hidden">
-                            <button onclick="voltarParaAlbuns()" style="margin-bottom: 10px;">⬅ Voltar aos álbuns</button>
-                            <h3 id="opened-album-title">Nome do Álbum</h3>
-                            
-                            <div style="background: #eef; padding: 10px; margin-bottom: 15px; border-radius:4px;">
-                                <h4>Adicionar Foto a este Álbum</h4>
+                            <button onclick="voltarParaAlbuns()" class="btn-primary" style="background:#627D98; margin-bottom:15px;">⬅ Voltar aos Álbuns</button>
+                            <h3 id="opened-album-title"></h3>
+                            <div style="background:#F0F4F8; padding:15px; border-radius:8px;">
+                                <label style="font-weight:bold; display:block; margin-bottom:5px;">Adicionar Nova Imagem no Álbum:</label>
                                 <input type="file" id="file-photo-input" accept="image/*">
                             </div>
                             <div id="gallery-photos" class="photo-gallery"></div>
@@ -357,64 +317,78 @@
                     </div>
                 </div>
 
-                <div id="sub-edit-profile-view" class="main-sub-screen hidden">
+                <!-- TRIBOS -->
+                <div id="sub-tribos-view" class="main-sub-screen hidden fade-in">
+                    <div class="card" id="tribos-hub">
+                        <h2>Tribos</h2>
+                        <div style="background:#F0F4F8; padding:10px; border-radius:8px; margin-bottom:15px; display:flex; flex-direction:column; gap:6px;">
+                            <input type="text" id="new-tribo-name" placeholder="Nome da Tribo..." style="margin-bottom:0;">
+                            <input type="text" id="new-tribo-desc" placeholder="Descrição..." style="margin-bottom:0;">
+                            <button onclick="criarTribo()" class="btn-primary">Fundar Tribo</button>
+                        </div>
+                        <div id="grid-tribos" class="tribo-grid"></div>
+                    </div>
+                    <div class="card hidden" id="tribo-interna">
+                        <button onclick="voltarParaTribosHub()" class="btn-primary" style="background:#627D98;">⬅ Voltar</button>
+                        <h2 id="view-tribo-title" style="margin-top:10px;"></h2>
+                        <p id="view-tribo-desc" style="color:#627D98; font-size:14px;"></p>
+                        <input type="text" id="new-topic-title" placeholder="Escreva um novo debate..."><button onclick="criarTopico()" class="btn-primary">Postar</button>
+                        <div id="lista-topicos" style="margin-top:15px;"></div>
+                    </div>
+                </div>
+
+                <!-- CONFIGURAÇÕES COMPLETA (FACEBOOK STYLE) -->
+                <div id="sub-settings-view" class="main-sub-screen hidden fade-in">
                     <div class="card">
-                        <div class="tab-box">
-                            <button class="tab-btn active" onclick="switchTab(event, 'tab-bio')">Perfil & Bio</button>
-                            <button class="tab-btn" onclick="switchTab(event, 'tab-avatar-upload')">Foto de Perfil</button>
-                            <button class="tab-btn" onclick="switchTab(event, 'tab-privacy')">Privacidade</button>
-                        </div>
+                        <h2>Configurações e Edição de Perfil</h2>
+                        <p style="font-size:13px; color:#627D98; margin-top:-8px;">Gerencie suas informações, mídias e segurança da conta.</p>
+                        
+                        <div class="fb-settings-layout">
+                            <div class="fb-settings-nav">
+                                <button class="active" onclick="switchSettingsTab(event, 'set-meta-center')">ℹ️ Central de Perfil</button>
+                                <button onclick="switchSettingsTab(event, 'set-security')">🔒 Senha e Segurança</button>
+                                <button onclick="switchSettingsTab(event, 'set-notifications')">🔔 Notificações</button>
+                                <button onclick="switchSettingsTab(event, 'set-blocking')">🚫 Bloqueios</button>
+                            </div>
 
-                        <div id="tab-bio" class="tab-content active">
-                            <h3>Editar Informações Pessoais</h3>
-                            <label>Frase de Status:</label>
-                            <input type="text" id="edit-status" placeholder="Sua frase do topo">
-                            <label>Quem sou eu (Bio):</label>
-                            <textarea id="edit-bio" rows="4" placeholder="Escreva sobre você..."></textarea>
-                            <button onclick="salvarPerfilBio()" class="btn-primary">Salvar Perfil</button>
-                        </div>
+                            <div class="fb-settings-content">
+                                <!-- Central de Contas / Perfil -->
+                                <div id="set-meta-center" class="fb-setting-section active">
+                                    <h3>Editar Informações Básicas</h3>
+                                    <label>Sua Frase de Status:</label>
+                                    <input type="text" id="set-input-status" placeholder="O que você está ouvindo ou fazendo?">
+                                    
+                                    <label>Biografia / Sobre Mim:</label>
+                                    <textarea id="set-input-bio" rows="3" placeholder="Conte mais sobre você..."></textarea>
+                                    
+                                    <label><b>Alterar Foto do Perfil (Avatar):</b></label>
+                                    <input type="file" id="set-input-avatar" accept="image/*" style="background:white; padding:6px; border:1px dashed var(--border-color);">
+                                    
+                                    <button onclick="salvarConfigPessoais()" class="btn-primary" style="margin-top:10px;">Atualizar Perfil</button>
+                                </div>
 
-                        <div id="tab-avatar-upload" class="tab-content">
-                            <h3>Alterar Foto do Perfil</h3>
-                            <p class="subtitle">Selecione uma imagem do seu dispositivo para usar como seu avatar oficial.</p>
-                            <div style="background: #f9f9f9; padding: 15px; border: 1px dashed var(--border-color); border-radius: 4px;">
-                                <input type="file" id="avatar-file-input" accept="image/*">
+                                <!-- Segurança -->
+                                <div id="set-security" class="fb-setting-section">
+                                    <h3>Login e Segurança</h3>
+                                    <label>Alterar Senha do Perfil:</label>
+                                    <input type="password" id="set-new-password" placeholder="Nova senha">
+                                    <button onclick="salvarConfigSeguranca()" class="btn-primary">Salvar Senha</button>
+                                </div>
+
+                                <!-- Notificações -->
+                                <div id="set-notifications" class="fb-setting-section">
+                                    <h3>Preferências do Sistema</h3>
+                                    <label><input type="checkbox" checked style="width:auto; margin-right:8px;"> Tocar som ao receber atualizações</label><br><br>
+                                    <label><input type="checkbox" checked style="width:auto; margin-right:8px;"> Alertas visuais para novas visualizações (Views)</label>
+                                </div>
+
+                                <!-- Bloqueios -->
+                                <div id="set-blocking" class="fb-setting-section">
+                                    <h3>Restrições de Feed</h3>
+                                    <select><option>Mostrar todas as postagens</option><option>Ocultar mídias pesadas automaticamente</option></select>
+                                </div>
                             </div>
                         </div>
-
-                        <div id="tab-privacy" class="tab-content">
-                            <h3>Configurações de Privacidade</h3>
-                            <label>Quem pode ver meus álbuns?</label>
-                            <select id="priv-albums">
-                                <option value="all">Todos os usuários</option>
-                                <option value="friends">Apenas amigos</option>
-                            </select>
-                            <button onclick="alert('Privacidade atualizada!')" class="btn-primary">Aplicar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="sub-messenger-view" class="main-sub-screen hidden">
-                    <div class="card">
-                        <h2>Messenger Interno</h2>
-                        <div class="chat-box" id="chat-messages-box">
-                            <div class="chat-msg">💡 <i>Bate-papo ativo na sessão atual!</i></div>
-                        </div>
-                        <div style="display: flex; gap: 8px;">
-                            <input type="text" id="chat-input-text" placeholder="Digite sua mensagem..." style="margin-bottom:0;">
-                            <button onclick="enviarMensagemChat()" class="btn-primary">Enviar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="sub-search-friends" class="main-sub-screen hidden">
-                    <div class="card">
-                        <h2>Procurar Usuários</h2>
-                        <div style="display:flex; gap:10px;">
-                            <input type="text" id="search-input" placeholder="Procure por usuários cadastrados..." style="margin-bottom:0;">
-                            <button onclick="executarBusca()" class="btn-primary">Buscar</button>
-                        </div>
-                        <ul id="search-results" style="padding-left:0; list-style:none; margin-top:15px;"></ul>
                     </div>
                 </div>
 
@@ -422,146 +396,104 @@
         </div>
     </main>
 
+    <!-- VIEWER DE STORIES MULTIMÍDIA -->
+    <div id="story-viewer-modal" class="story-modal hidden" onclick="fecharStoryModal()">
+        <div class="story-modal-content" onclick="event.stopPropagation()">
+            <div class="story-progress-bar"><div class="story-progress-fill" id="story-progress-indicator"></div></div>
+            <div id="story-modal-body" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:white;"></div>
+        </div>
+    </div>
+
     <script>
-        // Banco Inicial de Dados
+        // Inicialização do banco em LocalStorage
         if (!localStorage.getItem('fz_data')) {
-            const dadosIniciais = {
+            localStorage.setItem('fz_data', JSON.stringify({
                 users: {
-                    "eder86": { password: "123", bio: "Criador do FriendZone", status: "Sorte do dia: O amor está no ar", posts: [], albums: {}, avatar: "" }
-                }
-            };
-            localStorage.setItem('fz_data', JSON.stringify(dadosIniciais));
+                    "eder86": { password: "123", bio: "Criador da plataforma.", status: "Conectado multimídia! 🚀", posts: [], albums: {}, avatar: "", trust: "100%", cool: "100%", sexy: "100%", views: 184 }
+                },
+                tribos: {},
+                stories: []
+            }));
         }
 
         let usuarioLogado = null;
         let albumAtualAberto = null;
+        let triboAtualAberta = null;
+        let storyProgressAnimation = null;
+        let currentPostMediaBase64 = null;
+        let currentPostMediaType = null;
 
         function showLoginOrRegister(mode) {
-            if(mode === 'register') {
-                document.getElementById('screen-login').classList.add('hidden');
-                document.getElementById('screen-register').classList.remove('hidden');
-            } else {
-                document.getElementById('screen-register').classList.add('hidden');
-                document.getElementById('screen-login').classList.remove('hidden');
-            }
+            document.getElementById('screen-login').classList.toggle('hidden', mode === 'register');
+            document.getElementById('screen-register').classList.toggle('hidden', mode === 'login');
         }
 
         window.changeMainScreen = function(targetSubScreen) {
-            const subs = ['sub-profile-view', 'sub-albums-view', 'sub-edit-profile-view', 'sub-messenger-view', 'sub-search-friends'];
-            subs.forEach(s => document.getElementById(s).classList.add('hidden'));
+            document.querySelectorAll('.main-sub-screen').forEach(s => s.classList.add('hidden'));
             document.getElementById(`sub-${targetSubScreen}`).classList.remove('hidden');
             
-            if (targetSubScreen === 'profile-view') renderTimeline();
+            if (targetSubScreen === 'profile-view') { renderTimeline(); renderStories(); incrementalViews(); }
             if (targetSubScreen === 'albums-view') renderListaAlbuns();
+            if (targetSubScreen === 'tribos-view') voltarParaTribosHub();
+            if (targetSubScreen === 'settings-view') carregarConfiguracoesCampos();
         }
 
-        window.switchTab = function(evt, tabId) {
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(c => c.classList.remove('active'));
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(b => b.classList.remove('active'));
-            
+        window.switchSettingsTab = function(evt, tabId) {
+            document.querySelectorAll('.fb-setting-section').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.fb-settings-nav button').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             evt.currentTarget.classList.add('active');
         }
 
         function inicializarApp() {
             usuarioLogado = localStorage.getItem('fz_session');
-            const header = document.getElementById('main-header');
-            const loginBox = document.getElementById('screen-login');
-            const regBox = document.getElementById('screen-register');
-            const dashboard = document.getElementById('screen-dashboard');
-            const authLogo = document.getElementById('auth-logo-box');
-
             if (usuarioLogado) {
-                header.classList.remove('hidden');
-                authLogo.classList.add('hidden'); // Oculta a logo gigante de entrada
-                loginBox.classList.add('hidden');
-                regBox.classList.add('hidden');
-                dashboard.classList.remove('hidden');
+                document.getElementById('main-header').classList.remove('hidden');
+                document.getElementById('auth-logo-box').classList.add('hidden');
+                document.getElementById('screen-login').classList.add('hidden');
+                document.getElementById('screen-register').classList.add('hidden');
+                document.getElementById('screen-dashboard').classList.remove('hidden');
                 
                 const db = JSON.parse(localStorage.getItem('fz_data'));
-                const userData = db.users[usuarioLogado];
+                const u = db.users[usuarioLogado];
                 
-                document.getElementById('sidebar-display-name').innerText = `👤 ${usuarioLogado}`;
-                document.getElementById('sidebar-status').innerText = `"${userData.status || ''}"`;
-                
-                // Trata a foto de perfil da barra lateral
-                const avatarBox = document.getElementById('sidebar-avatar-box');
-                if (userData.avatar) {
-                    avatarBox.innerHTML = `<img src="${userData.avatar}" alt="Avatar">`;
-                } else {
-                    avatarBox.innerHTML = `<span class="profile-avatar-placeholder">👤</span>`;
-                }
+                document.getElementById('sidebar-display-name').innerText = `👤 @${usuarioLogado}`;
+                document.getElementById('sidebar-status').innerText = u.status ? `"${u.status}"` : '"Sem frase de status..."';
+                document.getElementById('view-count-number').innerText = u.views || 0;
+                document.getElementById('sidebar-avatar-box').innerHTML = u.avatar ? `<img src="${u.avatar}">` : `<span style='font-size:60px;'>👤</span>`;
                 
                 changeMainScreen('profile-view');
             } else {
-                header.classList.add('hidden');
-                authLogo.classList.remove('hidden'); // Mostra a logo gigante
-                dashboard.classList.add('hidden');
-                loginBox.classList.remove('hidden');
+                document.getElementById('main-header').classList.add('hidden');
+                document.getElementById('auth-logo-box').classList.remove('hidden');
+                document.getElementById('screen-dashboard').classList.add('hidden');
+                document.getElementById('screen-login').classList.remove('hidden');
             }
         }
 
-        // Upload de Foto de Perfil (Avatar)
-        document.getElementById('avatar-file-input').addEventListener('change', function(e) {
-            const arquivo = e.target.files[0];
-            if (!arquivo) return;
-
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                const base64Img = evt.target.result;
-                const db = JSON.parse(localStorage.getItem('fz_data'));
-                
-                db.users[usuarioLogado].avatar = base64Img;
-                localStorage.setItem('fz_data', JSON.stringify(db));
-                
-                alert("Foto de perfil atualizada!");
-                inicializarApp(); // Recarrega os avatares da interface
-            };
-            reader.readAsDataURL(arquivo);
-        });
-
-        // Cadastro
-        document.getElementById('register-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const user = document.getElementById('register-username').value.trim().toLowerCase();
-            const pass = document.getElementById('register-password').value;
-
+        function incrementalViews() {
             const db = JSON.parse(localStorage.getItem('fz_data'));
-            if(db.users[user]) {
-                alert("Usuário já existente!");
-                return;
-            }
-
-            db.users[user] = { password: pass, bio: "", status: "Olá!", posts: [], albums: {}, avatar: "" };
+            db.users[usuarioLogado].views = (db.users[usuarioLogado].views || 0) + Math.floor(Math.random() * 3) + 1;
             localStorage.setItem('fz_data', JSON.stringify(db));
-            localStorage.setItem('fz_session', user);
-            inicializarApp();
-        });
+            document.getElementById('view-count-number').innerText = db.users[usuarioLogado].views;
+        }
 
-        // Login
-        document.getElementById('login-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const user = document.getElementById('login-username').value.trim().toLowerCase();
-            const pass = document.getElementById('login-password').value;
-
-            const db = JSON.parse(localStorage.getItem('fz_data'));
-            if(db.users[user] && db.users[user].password === pass) {
-                localStorage.setItem('fz_session', user);
-                inicializarApp();
-            } else {
-                alert("Credenciais incorretas!");
+        /* MANIPULAÇÃO DE MÍDIA DO POST */
+        window.atualizarLabelMidia = function(input) {
+            if(input.files && input.files[0]) {
+                const file = input.files[0];
+                document.getElementById('post-media-file-name').innerText = file.name;
+                currentPostMediaType = file.type.split('/')[0]; // image, video ou audio
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentPostMediaBase64 = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
-        });
+        }
 
-        // Logout
-        document.getElementById('btn-logout').addEventListener('click', () => {
-            localStorage.removeItem('fz_session');
-            inicializarApp();
-        });
-
-        /* TIMELINE */
+        /* TIMELINE POSTS */
         document.getElementById('timeline-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const txt = document.getElementById('timeline-text').value;
@@ -569,42 +501,160 @@
             
             db.users[usuarioLogado].posts.unshift({
                 conteudo: txt,
+                media: currentPostMediaBase64,
+                mediaType: currentPostMediaType,
                 dataHora: new Date().toLocaleString('pt-BR')
             });
             
             localStorage.setItem('fz_data', JSON.stringify(db));
             document.getElementById('timeline-form').reset();
+            document.getElementById('post-media-file-name').innerText = "Nenhum arquivo...";
+            currentPostMediaBase64 = null;
+            currentPostMediaType = null;
             renderTimeline();
         });
 
         function renderTimeline() {
             const db = JSON.parse(localStorage.getItem('fz_data'));
-            const container = document.getElementById('timeline-posts');
+            const container = document.getElementById('timeline-posts'); 
             container.innerHTML = "";
-            const posts = db.users[usuarioLogado].posts || [];
             
-            if(posts.length === 0) {
-                container.innerHTML = "<p style='color:#666;'>Nenhuma publicação ainda.</p>";
-                return;
-            }
-
-            posts.forEach(p => {
-                const div = document.createElement('div');
-                div.className = "post-item";
-                div.innerHTML = `<div class="post-meta">Postado em: ${p.dataHora}</div><div>${p.conteudo}</div>`;
-                container.appendChild(div);
+            (db.users[usuarioLogado].posts || []).forEach(p => {
+                let midiaHtml = "";
+                if (p.media) {
+                    if (p.mediaType === 'image') midiaHtml = `<div class="post-media-container"><img src="${p.media}"></div>`;
+                    else if (p.mediaType === 'video') midiaHtml = `<div class="post-media-container"><video src="${p.media}" controls></video></div>`;
+                    else if (p.mediaType === 'audio') midiaHtml = `<div class="post-media-container"><audio src="${p.media}" controls></audio></div>`;
+                }
+                
+                container.innerHTML += `
+                    <div class="post-item">
+                        <div style="font-size:11px; color:#829AB1; margin-bottom:6px;">Postado em ${p.dataHora}</div>
+                        <div style="font-size:15px; font-weight:500;">${p.conteudo}</div>
+                        ${midiaHtml}
+                    </div>`;
             });
         }
 
-        /* ÁLBUNS */
-        window.criarAlbum = function() {
-            const nomeAlbum = document.getElementById('new-album-name').value.trim();
-            if(!nomeAlbum) return;
+        /* STORIES MULTIMÍDIA */
+        window.publicarStoryMultimidia = function(input) {
+            if (!input.files || !input.files[0]) return;
+            const file = input.files[0];
+            const tipo = file.type.split('/')[0];
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const db = JSON.parse(localStorage.getItem('fz_data'));
+                if(!db.stories) db.stories = [];
+                
+                db.stories.unshift({
+                    autor: usuarioLogado,
+                    mídia: e.target.result,
+                    tipo: tipo
+                });
+                
+                localStorage.setItem('fz_data', JSON.stringify(db));
+                renderStories();
+            };
+            reader.readAsDataURL(file);
+        }
 
+        function renderStories() {
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            document.querySelectorAll('.story-card:not(.add-story)').forEach(e => e.remove());
+            const shelf = document.getElementById('stories-shelf');
+            
+            (db.stories || []).forEach(s => {
+                const div = document.createElement('div');
+                div.className = "story-card";
+                div.onclick = () => verStoryMídia(s.mídia, s.tipo);
+                
+                if(s.tipo === 'image') {
+                    div.style.background = `url(${s.mídia}) center/cover no-repeat`;
+                } else {
+                    div.style.background = "linear-gradient(135deg, #2C3E50 0%, #1877F2 100%)";
+                }
+                
+                div.innerHTML += `<div style="position:absolute; top:8px; left:8px; background:var(--primary-blue); color:white; font-size:9px; padding:2px 6px; border-radius:10px; z-index:5;">@${s.autor}</div><div class="story-name">${s.tipo.toUpperCase()}</div>`;
+                shelf.appendChild(div);
+            });
+        }
+
+        function verStoryMídia(src, tipo) {
+            const modal = document.getElementById('story-viewer-modal');
+            const body = document.getElementById('story-modal-body');
+            const fill = document.getElementById('story-progress-indicator');
+            
+            body.innerHTML = "";
+            if (tipo === 'image') body.innerHTML = `<img src="${src}" style="max-width:100%; max-height:100%; object-fit:contain;">`;
+            else if (tipo === 'video') body.innerHTML = `<video src="${src}" autoplay playsinline style="max-width:100%; max-height:100%;"></video>`;
+            else if (tipo === 'audio') body.innerHTML = `<div style='text-align:center; padding:20px;'>🎵 Conteúdo em áudio tocando...<br><br><audio src="${src}" autoplay controls style='width:100%;'></audio></div>`;
+            
+            modal.classList.remove('hidden');
+            
+            // Controle de visualização de 5 segundos
+            fill.style.width = '0%';
+            if(storyProgressAnimation) clearInterval(storyProgressAnimation);
+            
+            let start = 0;
+            storyProgressAnimation = setInterval(() => {
+                start += 2;
+                fill.style.width = start + '%';
+                if(start >= 100) {
+                    fecharStoryModal();
+                }
+            }, 100);
+        }
+
+        window.fecharStoryModal = function() {
+            document.getElementById('story-viewer-modal').classList.add('hidden');
+            if(storyProgressAnimation) clearInterval(storyProgressAnimation);
+        }
+
+        /* CONFIGURAÇÕES DO PERFIL */
+        function carregarConfiguracoesCampos() {
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            const u = db.users[usuarioLogado];
+            document.getElementById('set-input-status').value = u.status || "";
+            document.getElementById('set-input-bio').value = u.bio || "";
+            document.getElementById('set-new-password').value = u.password || "";
+        }
+
+        window.salvarConfigPessoais = function() {
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            db.users[usuarioLogado].status = document.getElementById('set-input-status').value;
+            db.users[usuarioLogado].bio = document.getElementById('set-input-bio').value;
+            
+            const fileInput = document.getElementById('set-input-avatar');
+            if(fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    db.users[usuarioLogado].avatar = e.target.result;
+                    localStorage.setItem('fz_data', JSON.stringify(db));
+                    alert("Perfil e foto atualizados!");
+                    inicializarApp();
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                localStorage.setItem('fz_data', JSON.stringify(db));
+                alert("Perfil atualizado!");
+                inicializarApp();
+            }
+        }
+
+        window.salvarConfigSeguranca = function() {
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            db.users[usuarioLogado].password = document.getElementById('set-new-password').value;
+            localStorage.setItem('fz_data', JSON.stringify(db));
+            alert("Senha alterada!");
+        }
+
+        /* ÁLBUNS DE FOTOS */
+        window.criarAlbum = function() {
+            const name = document.getElementById('new-album-name').value.trim(); if(!name) return;
             const db = JSON.parse(localStorage.getItem('fz_data'));
             if(!db.users[usuarioLogado].albums) db.users[usuarioLogado].albums = {};
-            
-            db.users[usuarioLogado].albums[nomeAlbum] = [];
+            db.users[usuarioLogado].albums[name] = [];
             localStorage.setItem('fz_data', JSON.stringify(db));
             document.getElementById('new-album-name').value = "";
             renderListaAlbuns();
@@ -613,108 +663,123 @@
         function renderListaAlbuns() {
             document.getElementById('box-album-list').classList.remove('hidden');
             document.getElementById('box-inside-album').classList.add('hidden');
-            
             const db = JSON.parse(localStorage.getItem('fz_data'));
-            const container = document.getElementById('grid-albuns');
-            container.innerHTML = "";
-            
-            const albuns = db.users[usuarioLogado].albums || {};
-            const chaves = Object.keys(albuns);
-
-            if(chaves.length === 0) {
-                container.innerHTML = "<p style='color:#666; grid-column: 1/-1;'>Nenhum álbum criado.</p>";
-                return;
-            }
-
-            chaves.forEach(nome => {
-                const div = document.createElement('div');
-                div.className = "album-card";
-                div.onclick = () => abrirAlbum(nome);
-                div.innerHTML = `<div class="album-icon">📁</div><strong>${nome}</strong><br><small>${albuns[nome].length} fotos</small>`;
-                container.appendChild(div);
+            const container = document.getElementById('grid-albuns'); container.innerHTML = "";
+            Object.keys(db.users[usuarioLogado].albums || {}).forEach(n => {
+                container.innerHTML += `<div class="album-card" onclick="abrirAlbum('${n}')">📁<br><strong>${n}</strong></div>`;
             });
         }
 
-        function abrirAlbum(nome) {
-            albumAtualAberto = nome;
+        function abrirAlbum(n) {
+            albumAtualAberto = n;
             document.getElementById('box-album-list').classList.add('hidden');
             document.getElementById('box-inside-album').classList.remove('hidden');
-            document.getElementById('opened-album-title').innerText = `Álbum: ${nome}`;
+            document.getElementById('opened-album-title').innerText = `Álbum: ${n}`;
             renderFotosDoAlbum();
         }
 
-        window.voltarParaAlbuns = function() {
-            albumAtualAberto = null;
-            renderListaAlbuns();
-        }
+        window.voltarParaAlbuns = function() { albumAtualAberto = null; renderListaAlbuns(); }
 
         document.getElementById('file-photo-input').addEventListener('change', function(e) {
-            const arquivo = e.target.files[0];
-            if (!arquivo || !albumAtualAberto) return;
-
+            if(!e.target.files[0]) return;
             const reader = new FileReader();
             reader.onload = function(evt) {
-                const base64Img = evt.target.result;
                 const db = JSON.parse(localStorage.getItem('fz_data'));
-                
-                db.users[usuarioLogado].albums[albumAtualAberto].push(base64Img);
+                db.users[usuarioLogado].albums[albumAtualAberto].push(evt.target.result);
                 localStorage.setItem('fz_data', JSON.stringify(db));
-                
-                document.getElementById('file-photo-input').value = "";
                 renderFotosDoAlbum();
-            };
-            reader.readAsDataURL(arquivo);
+            }; reader.readAsDataURL(e.target.files[0]);
         });
 
         function renderFotosDoAlbum() {
             const db = JSON.parse(localStorage.getItem('fz_data'));
-            const container = document.getElementById('gallery-photos');
-            container.innerHTML = "";
-            
-            const fotos = db.users[usuarioLogado].albums[albumAtualAberto] || [];
-            fotos.forEach(src => {
-                const img = document.createElement('img');
-                img.src = src;
-                container.appendChild(img);
+            const container = document.getElementById('gallery-photos'); container.innerHTML = "";
+            (db.users[usuarioLogado].albums[albumAtualAberto] || []).forEach(src => {
+                container.innerHTML += `<img src="${src}">`;
             });
         }
 
-        window.salvarPerfilBio = function() {
-            const status = document.getElementById('edit-status').value;
-            const bio = document.getElementById('edit-bio').value;
+        /* TRIBOS */
+        window.criarTribo = function() {
+            const n = document.getElementById('new-tribo-name').value.trim();
+            const d = document.getElementById('new-tribo-desc').value.trim(); if(!n) return;
             const db = JSON.parse(localStorage.getItem('fz_data'));
-
-            db.users[usuarioLogado].status = status;
-            db.users[usuarioLogado].bio = bio;
-
+            db.tribos[n] = { desc: d, membros: 1, topicos: [] };
             localStorage.setItem('fz_data', JSON.stringify(db));
-            alert("Perfil Atualizado!");
+            renderListaTribos();
+        }
+
+        function renderListaTribos() {
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            const container = document.getElementById('grid-tribos'); container.innerHTML = "";
+            Object.keys(db.tribos).forEach(nome => {
+                container.innerHTML += `<div class="album-card" onclick="abrirTribo('${nome}')">👥<br><strong>${nome}</strong></div>`;
+            });
+        }
+
+        function abrirTribo(nome) {
+            triboAtualAberta = nome; document.getElementById('tribos-hub').classList.add('hidden');
+            document.getElementById('tribo-interna').classList.remove('hidden');
+            document.getElementById('view-tribo-title').innerText = nome;
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            document.getElementById('view-tribo-desc').innerText = db.tribos[nome].desc;
+            renderTopicos();
+        }
+
+        window.voltarParaTribosHub = function() { triboAtualAberta = null; document.getElementById('tribo-interna').classList.add('hidden'); document.getElementById('tribos-hub').classList.remove('hidden'); renderListaTribos(); }
+
+        window.criarTopico = function() {
+            const t = document.getElementById('new-topic-title').value.trim(); if(!t) return;
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            db.tribos[triboAtualAberta].topicos.unshift({ titulo: t, autor: usuarioLogado });
+            localStorage.setItem('fz_data', JSON.stringify(db));
+            document.getElementById('new-topic-title').value = "";
+            renderTopicos();
+        }
+
+        function renderTopicos() {
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            const container = document.getElementById('lista-topicos'); container.innerHTML = "";
+            (db.tribos[triboAtualAberta].topicos || []).forEach(top => {
+                container.innerHTML += `<div style='background:#FFF; padding:8px; border:1px solid #CCC; margin-bottom:4px;'>💬 <b>${top.titulo}</b> <small>(por @${top.autor})</small></div>`;
+            });
+        }
+
+        /* REGISTRO E AUTH */
+        document.getElementById('register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('register-username').value.trim().toLowerCase();
+            const pass = document.getElementById('register-password').value;
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            if(db.users[user]) return alert("Usuário indisponível.");
+            db.users[user] = { password: pass, bio: "", status: "", posts: [], albums: {}, avatar: "", trust: "100%", cool: "100%", sexy: "100%", views: 1 };
+            localStorage.setItem('fz_data', JSON.stringify(db));
+            localStorage.setItem('fz_session', user);
             inicializarApp();
-        }
+        });
 
-        window.enviarMensagemChat = function() {
-            const campo = document.getElementById('chat-input-text');
-            const m = campo.value.trim();
-            if(!m) return;
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('login-username').value.trim().toLowerCase();
+            const pass = document.getElementById('login-password').value;
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            if(db.users[user] && db.users[user].password === pass) {
+                localStorage.setItem('fz_session', user);
+                inicializarApp();
+            } else alert("Credenciais incorretas!");
+        });
 
-            const box = document.getElementById('chat-messages-box');
-            box.innerHTML += `<div class="chat-msg me">Você: <span style="font-weight:normal; color:#333;">${m}</span></div>`;
-            campo.value = "";
-            box.scrollTop = box.scrollHeight;
-        }
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            localStorage.removeItem('fz_session');
+            inicializarApp();
+        });
 
         window.executarBusca = function() {
-            const termo = document.getElementById('search-input').value.trim().toLowerCase();
-            const container = document.getElementById('search-results');
-            container.innerHTML = "";
-
-            if(!termo) return;
+            const v = document.getElementById('search-input').value.toLowerCase();
+            const res = document.getElementById('search-results'); res.innerHTML = "";
             const db = JSON.parse(localStorage.getItem('fz_data'));
-            const users = Object.keys(db.users);
-
-            const filtrados = users.filter(u => u.includes(termo));
-            filtrados.forEach(u => {
-                container.innerHTML += `<li style="background:#fff; padding:8px; border:1px solid #ccc; margin-bottom:4px; border-radius:4px;">👤 <b>${u}</b> - ${db.users[u].bio || 'Sem bio'}</li>`;
+            Object.keys(db.users).filter(u => u.includes(v)).forEach(u => {
+                res.innerHTML += `<li>👤 <b>${u}</b> — ${db.users[u].status || ''}</li>`;
             });
         }
 
