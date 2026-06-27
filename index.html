@@ -13,7 +13,7 @@
             --orkut-light-blue: #F2F5F9;
             --text-color: #333333;
             --border-color: #C0C0C0;
-            --success-green: #2E7D32;
+            --orkut-magenta: #ED1C24;
         }
 
         body {
@@ -32,7 +32,23 @@
 
         .hidden { display: none !important; }
 
-        /* Header */
+        /* Estilização da Logo FriendZone */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .main-logo {
+            font-family: 'Arial Black', Gadget, sans-serif;
+            font-size: 38px;
+            color: var(--orkut-blue);
+            margin: 0;
+            text-shadow: 1px 1px 0px #fff;
+        }
+        .main-logo span {
+            color: var(--orkut-magenta);
+        }
+
+        /* Header Principal */
         header {
             background-color: var(--orkut-blue);
             padding: 12px 20px;
@@ -47,8 +63,17 @@
             align-items: center;
         }
 
-        header h1 { margin: 0; font-size: 24px; letter-spacing: 1px; }
-        header button {
+        header .header-logo {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 22px;
+            color: white;
+            margin: 0;
+        }
+        header .header-logo span {
+            color: #FFD700; /* Destaque dourado/amarelo para o "Zone" no topo */
+        }
+
+        header nav button {
             background: transparent;
             border: none;
             color: white;
@@ -57,7 +82,7 @@
             margin-left: 15px;
             font-size: 14px;
         }
-        header button:hover { text-decoration: underline; }
+        header nav button:hover { text-decoration: underline; }
 
         /* Cards Gerais */
         .card {
@@ -71,7 +96,7 @@
         h2, h3 { color: var(--orkut-blue); margin-top: 0; }
         .subtitle { color: #777; margin-top: -10px; margin-bottom: 20px; font-size: 14px; }
 
-        /* Form_Elements */
+        /* Elementos de Formulário */
         input, textarea, select {
             width: 100%;
             padding: 8px;
@@ -96,7 +121,7 @@
         .form-links { margin-top: 15px; display: flex; justify-content: space-between; font-size: 14px; }
         .form-links a { color: var(--orkut-blue); text-decoration: none; }
 
-        /* Layout em Duas Colunas do Perfil */
+        /* Layout Lateral */
         .profile-layout {
             display: grid;
             grid-template-columns: 260px 1fr;
@@ -104,15 +129,28 @@
         }
 
         .profile-sidebar { text-align: center; }
-        .profile-avatar {
-            font-size: 70px;
-            background: #e0e0e0;
-            width: 130px;
-            height: 130px;
-            line-height: 130px;
+        
+        /* Container da foto de perfil */
+        .profile-avatar-container {
+            width: 140px;
+            height: 140px;
             margin: 0 auto 15px;
-            border-radius: 4px;
             border: 1px solid var(--border-color);
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .profile-avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-avatar-placeholder {
+            font-size: 70px;
+            color: #888;
         }
 
         .sidebar-menu {
@@ -133,7 +171,7 @@
         }
         .sidebar-menu button:hover { background-color: var(--orkut-light-blue); }
 
-        /* Sistema de Abas (Tabs) */
+        /* Sistema de Abas */
         .tab-box {
             display: flex;
             border-bottom: 2px solid var(--orkut-blue);
@@ -160,8 +198,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Elementos das Funcionalidades */
-        .post-item, .scrap-item {
+        .post-item {
             background: var(--orkut-light-blue);
             padding: 12px;
             border: 1px solid var(--border-color);
@@ -170,7 +207,7 @@
         }
         .post-meta { font-size: 11px; color: #666; margin-bottom: 6px; }
 
-        /* Grid de Álbuns e Fotos */
+        /* Grid de Álbuns */
         .album-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -220,7 +257,7 @@
 
     <header id="main-header" class="hidden">
         <div class="header-container">
-            <h1 class="logo">FriendZone</h1>
+            <h1 class="header-logo">Friend<span>Zone</span></h1>
             <nav>
                 <button onclick="changeMainScreen('profile-view')">Meu Perfil</button>
                 <button onclick="changeMainScreen('search-friends')">Buscar Amigos</button>
@@ -231,9 +268,13 @@
 
     <main class="container">
         
+        <div id="auth-logo-box" class="logo-container">
+            <h1 class="main-logo">Friend<span>Zone</span></h1>
+        </div>
+
         <section id="screen-login" class="card">
             <h2>Bem-vindo ao FriendZone</h2>
-            <p class="subtitle">Sua nova velha rede social em uma única página</p>
+            <p class="subtitle">A sua nova velha rede social em uma única página</p>
             <form id="login-form">
                 <input type="text" id="login-username" placeholder="Nome de Usuário" required>
                 <input type="password" id="login-password" placeholder="Senha" required>
@@ -245,7 +286,7 @@
         </section>
 
         <section id="screen-register" class="card hidden">
-            <h2>Criar uma conta no FriendZone</h2>
+            <h2>Criar uma conta</h2>
             <form id="register-form">
                 <input type="text" id="register-username" placeholder="Nome de Usuário (ex: eder86)" required>
                 <input type="password" id="register-password" placeholder="Senha (mín. 4 caracteres)" required>
@@ -259,9 +300,11 @@
         <div id="screen-dashboard" class="profile-layout hidden">
             
             <aside class="profile-sidebar card">
-                <div class="profile-avatar">👤</div>
+                <div class="profile-avatar-container" id="sidebar-avatar-box">
+                    <span class="profile-avatar-placeholder">👤</span>
+                </div>
                 <h3 id="sidebar-display-name">@usuario</h3>
-                <p id="sidebar-status" class="status">"Sorte do dia: Código limpo é vida."</p>
+                <p id="sidebar-status" class="status">"Status temporário"</p>
                 
                 <div class="sidebar-menu">
                     <button onclick="changeMainScreen('profile-view')">🏠 Linha do Tempo</button>
@@ -291,7 +334,7 @@
                         <div style="background: #F2F5F9; padding: 12px; border-radius: 4px; margin-bottom: 15px;">
                             <h3>Criar Novo Álbum</h3>
                             <div style="display:flex; gap:10px;">
-                                <input type="text" id="new-album-name" placeholder="Nome do álbum (ex: Praia 2026)" style="margin-bottom:0;">
+                                <input type="text" id="new-album-name" placeholder="Nome do álbum" style="margin-bottom:0;">
                                 <button onclick="criarAlbum()" class="btn-primary">Criar</button>
                             </div>
                         </div>
@@ -318,8 +361,8 @@
                     <div class="card">
                         <div class="tab-box">
                             <button class="tab-btn active" onclick="switchTab(event, 'tab-bio')">Perfil & Bio</button>
+                            <button class="tab-btn" onclick="switchTab(event, 'tab-avatar-upload')">Foto de Perfil</button>
                             <button class="tab-btn" onclick="switchTab(event, 'tab-privacy')">Privacidade</button>
-                            <button class="tab-btn" onclick="switchTab(event, 'tab-config')">Configurações</button>
                         </div>
 
                         <div id="tab-bio" class="tab-content active">
@@ -331,32 +374,22 @@
                             <button onclick="salvarPerfilBio()" class="btn-primary">Salvar Perfil</button>
                         </div>
 
+                        <div id="tab-avatar-upload" class="tab-content">
+                            <h3>Alterar Foto do Perfil</h3>
+                            <p class="subtitle">Selecione uma imagem do seu dispositivo para usar como seu avatar oficial.</p>
+                            <div style="background: #f9f9f9; padding: 15px; border: 1px dashed var(--border-color); border-radius: 4px;">
+                                <input type="file" id="avatar-file-input" accept="image/*">
+                            </div>
+                        </div>
+
                         <div id="tab-privacy" class="tab-content">
                             <h3>Configurações de Privacidade</h3>
                             <label>Quem pode ver meus álbuns?</label>
                             <select id="priv-albums">
                                 <option value="all">Todos os usuários</option>
                                 <option value="friends">Apenas amigos</option>
-                                <option value="me">Somente eu</option>
                             </select>
-                            <label>Exibir meu status de conexão online?</label>
-                            <select id="priv-status">
-                                <option value="yes">Sim, mostrar</option>
-                                <option value="no">Não, ocultar</option>
-                            </select>
-                            <button onclick="alert('Configurações de privacidade salvas!')" class="btn-primary">Aplicar Privacidade</button>
-                        </div>
-
-                        <div id="tab-config" class="tab-content">
-                            <h3>Configurações da Conta</h3>
-                            <label>Idioma da Interface:</label>
-                            <select>
-                                <option>Português (BR)</option>
-                                <option>English</option>
-                            </select>
-                            <label>Notificações por Som:</label>
-                            <input type="checkbox" checked style="width:auto; margin-bottom:20px;"> Ativar sons de mensagens<br>
-                            <button onclick="alert('Definições gerais atualizadas!')" class="btn-primary">Salvar Definições</button>
+                            <button onclick="alert('Privacidade atualizada!')" class="btn-primary">Aplicar</button>
                         </div>
                     </div>
                 </div>
@@ -364,9 +397,8 @@
                 <div id="sub-messenger-view" class="main-sub-screen hidden">
                     <div class="card">
                         <h2>Messenger Interno</h2>
-                        <p class="subtitle">Envie mensagens em tempo real para os membros do site</p>
                         <div class="chat-box" id="chat-messages-box">
-                            <div class="chat-msg">💡 <i>Dica: Envie uma mensagem fictícia para simular o bate-papo!</i></div>
+                            <div class="chat-msg">💡 <i>Bate-papo ativo na sessão atual!</i></div>
                         </div>
                         <div style="display: flex; gap: 8px;">
                             <input type="text" id="chat-input-text" placeholder="Digite sua mensagem..." style="margin-bottom:0;">
@@ -382,7 +414,7 @@
                             <input type="text" id="search-input" placeholder="Procure por usuários cadastrados..." style="margin-bottom:0;">
                             <button onclick="executarBusca()" class="btn-primary">Buscar</button>
                         </div>
-                        <ul id="search-results" class="results-list" style="padding-left:0; list-style:none; margin-top:15px;"></ul>
+                        <ul id="search-results" style="padding-left:0; list-style:none; margin-top:15px;"></ul>
                     </div>
                 </div>
 
@@ -391,12 +423,11 @@
     </main>
 
     <script>
-        // Banco Inicial de Dados persistido no LocalStorage
+        // Banco Inicial de Dados
         if (!localStorage.getItem('fz_data')) {
             const dadosIniciais = {
                 users: {
-                    "eder86": { password: "123", bio: "Criador do FriendZone", status: "Sorte do dia: O amor está no ar", posts: [], albums: {} },
-                    "edilene_amor": { password: "123", bio: "Apaixonada por fotografia", status: "Tudo flui", posts: [], albums: {} }
+                    "eder86": { password: "123", bio: "Criador do FriendZone", status: "Sorte do dia: O amor está no ar", posts: [], albums: {}, avatar: "" }
                 }
             };
             localStorage.setItem('fz_data', JSON.stringify(dadosIniciais));
@@ -405,7 +436,6 @@
         let usuarioLogado = null;
         let albumAtualAberto = null;
 
-        // Gerenciador de Exibição Login vs Cadastro
         function showLoginOrRegister(mode) {
             if(mode === 'register') {
                 document.getElementById('screen-login').classList.add('hidden');
@@ -416,22 +446,18 @@
             }
         }
 
-        // Sistema Global SPA para trocar sub-telas do menu lateral
         window.changeMainScreen = function(targetSubScreen) {
             const subs = ['sub-profile-view', 'sub-albums-view', 'sub-edit-profile-view', 'sub-messenger-view', 'sub-search-friends'];
             subs.forEach(s => document.getElementById(s).classList.add('hidden'));
             document.getElementById(`sub-${targetSubScreen}`).classList.remove('hidden');
             
-            // Renderizações condicionais rápidas
             if (targetSubScreen === 'profile-view') renderTimeline();
             if (targetSubScreen === 'albums-view') renderListaAlbuns();
         }
 
-        // Sistema de Tabs na aba de Configurações
         window.switchTab = function(evt, tabId) {
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(c => c.classList.remove('active'));
-            
             const buttons = document.querySelectorAll('.tab-btn');
             buttons.forEach(b => b.classList.remove('active'));
             
@@ -439,32 +465,62 @@
             evt.currentTarget.classList.add('active');
         }
 
-        // Checagem de Sessão Ativa
         function inicializarApp() {
             usuarioLogado = localStorage.getItem('fz_session');
             const header = document.getElementById('main-header');
             const loginBox = document.getElementById('screen-login');
             const regBox = document.getElementById('screen-register');
             const dashboard = document.getElementById('screen-dashboard');
+            const authLogo = document.getElementById('auth-logo-box');
 
             if (usuarioLogado) {
                 header.classList.remove('hidden');
+                authLogo.classList.add('hidden'); // Oculta a logo gigante de entrada
                 loginBox.classList.add('hidden');
                 regBox.classList.add('hidden');
                 dashboard.classList.remove('hidden');
                 
-                // Atualiza Sidebar fixa
                 const db = JSON.parse(localStorage.getItem('fz_data'));
+                const userData = db.users[usuarioLogado];
+                
                 document.getElementById('sidebar-display-name').innerText = `👤 ${usuarioLogado}`;
-                document.getElementById('sidebar-status').innerText = `"${db.users[usuarioLogado].status || ''}"`;
+                document.getElementById('sidebar-status').innerText = `"${userData.status || ''}"`;
+                
+                // Trata a foto de perfil da barra lateral
+                const avatarBox = document.getElementById('sidebar-avatar-box');
+                if (userData.avatar) {
+                    avatarBox.innerHTML = `<img src="${userData.avatar}" alt="Avatar">`;
+                } else {
+                    avatarBox.innerHTML = `<span class="profile-avatar-placeholder">👤</span>`;
+                }
                 
                 changeMainScreen('profile-view');
             } else {
                 header.classList.add('hidden');
+                authLogo.classList.remove('hidden'); // Mostra a logo gigante
                 dashboard.classList.add('hidden');
                 loginBox.classList.remove('hidden');
             }
         }
+
+        // Upload de Foto de Perfil (Avatar)
+        document.getElementById('avatar-file-input').addEventListener('change', function(e) {
+            const arquivo = e.target.files[0];
+            if (!arquivo) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const base64Img = evt.target.result;
+                const db = JSON.parse(localStorage.getItem('fz_data'));
+                
+                db.users[usuarioLogado].avatar = base64Img;
+                localStorage.setItem('fz_data', JSON.stringify(db));
+                
+                alert("Foto de perfil atualizada!");
+                inicializarApp(); // Recarrega os avatares da interface
+            };
+            reader.readAsDataURL(arquivo);
+        });
 
         // Cadastro
         document.getElementById('register-form').addEventListener('submit', (e) => {
@@ -478,10 +534,9 @@
                 return;
             }
 
-            db.users[user] = { password: pass, bio: "", status: "Olá mundo!", posts: [], albums: {} };
+            db.users[user] = { password: pass, bio: "", status: "Olá!", posts: [], albums: {}, avatar: "" };
             localStorage.setItem('fz_data', JSON.stringify(db));
             localStorage.setItem('fz_session', user);
-            alert("Sua conta foi criada!");
             inicializarApp();
         });
 
@@ -506,7 +561,7 @@
             inicializarApp();
         });
 
-        /* --- LOGICA DA TIMELINE --- */
+        /* TIMELINE */
         document.getElementById('timeline-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const txt = document.getElementById('timeline-text').value;
@@ -541,7 +596,7 @@
             });
         }
 
-        /* --- LÓGICA DE ÁLBUNS & FOTOS --- */
+        /* ÁLBUNS */
         window.criarAlbum = function() {
             const nomeAlbum = document.getElementById('new-album-name').value.trim();
             if(!nomeAlbum) return;
@@ -593,7 +648,6 @@
             renderListaAlbuns();
         }
 
-        // Converte a imagem adicionada para Base64 para armazenar no LocalStorage
         document.getElementById('file-photo-input').addEventListener('change', function(e) {
             const arquivo = e.target.files[0];
             if (!arquivo || !albumAtualAberto) return;
@@ -618,11 +672,6 @@
             container.innerHTML = "";
             
             const fotos = db.users[usuarioLogado].albums[albumAtualAberto] || [];
-            if(fotos.length === 0) {
-                container.innerHTML = "<p style='color:#666;'>Este álbum não tem fotos ainda.</p>";
-                return;
-            }
-
             fotos.forEach(src => {
                 const img = document.createElement('img');
                 img.src = src;
@@ -630,7 +679,6 @@
             });
         }
 
-        /* --- SALVAR BIO E STATUS --- */
         window.salvarPerfilBio = function() {
             const status = document.getElementById('edit-status').value;
             const bio = document.getElementById('edit-bio').value;
@@ -640,11 +688,10 @@
             db.users[usuarioLogado].bio = bio;
 
             localStorage.setItem('fz_data', JSON.stringify(db));
-            alert("Informações salvas!");
+            alert("Perfil Atualizado!");
             inicializarApp();
         }
 
-        /* --- MESSENGER SIMULADO --- */
         window.enviarMensagemChat = function() {
             const campo = document.getElementById('chat-input-text');
             const m = campo.value.trim();
@@ -656,7 +703,6 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        /* --- BUSCA DE MEMBROS --- */
         window.executarBusca = function() {
             const termo = document.getElementById('search-input').value.trim().toLowerCase();
             const container = document.getElementById('search-results');
@@ -667,17 +713,11 @@
             const users = Object.keys(db.users);
 
             const filtrados = users.filter(u => u.includes(termo));
-            if(filtrados.length === 0) {
-                container.innerHTML = "<li>Nenhum usuário encontrado.</li>";
-                return;
-            }
-
             filtrados.forEach(u => {
                 container.innerHTML += `<li style="background:#fff; padding:8px; border:1px solid #ccc; margin-bottom:4px; border-radius:4px;">👤 <b>${u}</b> - ${db.users[u].bio || 'Sem bio'}</li>`;
             });
         }
 
-        // Execução Inicial
         inicializarApp();
     </script>
 </body>
