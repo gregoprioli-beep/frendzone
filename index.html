@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FriendZone</title>
+    
+    <style>
+        :root {
+            --bg-color: #E5EDF5;
+            --card-bg: #FFFFFF;
+            --primary-blue: #B4C6E7;
+            --orkut-blue: #4B6C9E;
+            --text-color: #333333;
+            --border-color: #C0C0C0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--orkut-blue);
+            padding: 10px 20px;
+            color: white;
+        }
+
+        .header-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 { margin: 0; font-size: 24px; }
+        header button {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+
+        /* Cards e Telas */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        h2 { color: var(--orkut-blue); margin-top: 0; }
+        .subtitle { color: #777; margin-top: -10px; margin-bottom: 20px; }
+
+        /* Formulários */
+        form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .btn-primary {
+            background-color: var(--orkut-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .btn-primary:hover { opacity: 0.9; }
+        .form-links { margin-top: 15px; display: flex; justify-content: space-between; font-size: 14px; }
+        .form-links a { color: var(--orkut-blue); text-decoration: none; }
+        .form-links a:hover { text-decoration: underline; }
+
+        /* Layout do Perfil */
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+
+        .profile-sidebar { text-align: center; }
+        .profile-avatar {
+            font-size: 80px;
+            background: #e0e0e0;
+            width: 120px;
+            height: 120px;
+            line-height: 120px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+        }
+
+        .status { font-style: italic; color: #555; }
+        .orkut-scraps { background: #F2F5F9; padding: 15px; border-radius: 4px; margin-top: 20px; }
+
+        /* Busca */
+        .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        .search-box input { margin-bottom: 0; }
+        .search-box button { width: auto; }
+        .results-list { list-style: none; padding: 0; }
+        .results-list li {
+            background: white;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <header id="main-header" class="hidden">
+        <div class="header-container">
+            <h1 class="logo">FriendZone</h1>
+            <nav>
+                <button onclick="navigateTo('profile-screen')">Início</button>
+                <button onclick="navigateTo('search-screen')">Buscar Amigos</button>
+                <button id="btn-logout">Sair</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section id="login-screen" class="card">
+            <h2>Bem-vindo ao FriendZone</h2>
+            <p class="subtitle">A sua nova velha rede social</p>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="E-mail" required>
+                <input type="password" id="login-password" placeholder="Senha" required>
+                <button type="submit" class="btn-primary">Entrar</button>
+            </form>
+            <div class="form-links">
+                <a href="#" onclick="navigateTo('register-screen')">Não tem conta? Cadastre-se</a>
+                <a href="#" onclick="navigateTo('recover-screen')">Esqueceu a senha?</a>
+            </div>
+        </section>
+
+        <section id="register-screen" class="card hidden">
+            <h2>Criar uma conta</h2>
+            <form id="register-form">
+                <input type="text" id="register-name" placeholder="Nome Completo" required>
+                <input type="email" id="register-email" placeholder="E-mail" required>
+                <input type="password" id="register-password" placeholder="Senha (mín. 6 caracteres)" required>
+                <button type="submit" class="btn-primary">Cadastrar</button>
+            </form>
+            <div class="form-links">
+                <a href="#" onclick="navigateTo('login-screen')">Já tem conta? Faça Login</a>
+            </div>
+        </section>
+
+        <section id="recover-screen" class="card hidden">
+            <h2>Recuperar Senha</h2>
+            <p>Digite seu e-mail para receber as instruções de redefinição.</p>
+            <form id="recover-form">
+                <input type="email" id="recover-email" placeholder="E-mail cadastrado" required>
+                <button type="submit" class="btn-primary">Enviar E-mail</button>
+            </form>
+            <div class="form-links">
+                <a href="#" onclick="navigateTo('login-screen')">Voltar para o Login</a>
+            </div>
+        </section>
+
+        <section id="profile-screen" class="profile-layout hidden">
+            <div class="profile-sidebar card">
+                <div class="profile-avatar">👤</div>
+                <h3 id="profile-name">Carregando...</h3>
+                <p id="profile-status" class="status">"Sorte do dia: O amor está no ar."</p>
+            </div>
+            
+            <div class="profile-main card">
+                <h2>Meu Perfil</h2>
+                <div class="orkut-scraps">
+                    <h3>Recados (Scraps)</h3>
+                    <p>Funcionalidade em breve! Deixe seu depoimento.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="search-screen" class="card hidden">
+            <h2>Procurar Amigos</h2>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Digite o nome exato do amigo...">
+                <button id="btn-search" class="btn-primary">Buscar</button>
+            </div>
+            <ul id="search-results" class="results-list"></ul>
+        </section>
+
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        // Suas configurações do Firebase adicionadas com sucesso!
+        const firebaseConfig = {
+            apiKey: "AIzaSyCDddrDWE7Ss0pZLY3MQbSxbR_Z492L2Tw",
+            authDomain: "frendzone.firebaseapp.com",
+            databaseURL: "https://frendzone-default-rtdb.firebaseio.com",
+            projectId: "frendzone",
+            storageBucket: "frendzone.firebasestorage.app",
+            messagingSenderId: "200315585733",
+            appId: "1:200315585733:web:8481d150ecae8b04c21cac"
+        };
+
+        // Inicializa o Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Sistema Global de Navegação (SPA)
+        window.navigateTo = function(screenId) {
+            const screens = ['login-screen', 'register-screen', 'recover-screen', 'profile-screen', 'search-screen'];
+            screens.forEach(screen => {
+                document.getElementById(screen).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        // Monitora o estado de login do usuário
+        onAuthStateChanged(auth, async (user) => {
+            const header = document.getElementById('main-header');
+            if (user) {
+                header.classList.remove('hidden');
+                
+                // Busca o nome do usuário salvo no banco Cloud Firestore
+                const docRef = doc(db, "users", user.uid);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    document.getElementById('profile-name').innerText = docSnap.data().name;
+                } else {
+                    document.getElementById('profile-name').innerText = "Membro do FriendZone";
+                }
+                navigateTo('profile-screen');
+            } else {
+                header.classList.add('hidden');
+                navigateTo('login-screen');
+            }
+        });
+
+        // Cadastro de Usuário
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                // Salva o nome atrelado ao UID no Firestore para as buscas funcionarem
+                await setDoc(doc(db, "users", user.uid), {
+                    name: name,
+                    email: email,
+                    uid: user.uid
+                });
+                
+                alert("Conta criada com sucesso!");
+                document.getElementById('register-form').reset();
+            } catch (error) {
+                alert("Erro ao cadastrar: " + error.message);
+            }
+        });
+
+        // Login de Usuário
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                alert("Erro ao entrar: " + error.message);
+            }
+        });
+
+        // Recuperação de Senha
+        document.getElementById('recover-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('recover-email').value;
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                alert("E-mail de recuperação enviado!");
+                navigateTo('login-screen');
+            } catch (error) {
+                alert("Erro: " + error.message);
+            }
+        });
+
+        // Botão Sair (Logout)
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        // Busca de Usuários no Firestore pelo nome exato
+        document.getElementById('btn-search').addEventListener('click', async () => {
+            const searchTerm = document.getElementById('search-input').value.trim();
+            const resultsContainer = document.getElementById('search-results');
+            resultsContainer.innerHTML = "Buscando...";
+
+            if (!searchTerm) {
+                resultsContainer.innerHTML = "<li>Digite um nome para pesquisar.</li>";
+                return;
+            }
+
+            try {
+                const q = query(collection(db, "users"), where("name", "==", searchTerm));
+                const querySnapshot = await getDocs(q);
+                resultsContainer.innerHTML = "";
+
+                if (querySnapshot.empty) {
+                    resultsContainer.innerHTML = "<li>Nenhum amigo encontrado com esse nome exato.</li>";
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>👤 ${data.name}</strong> — Enviar recado (Em breve)`;
+                    resultsContainer.appendChild(li);
+                });
+            } catch (error) {
+                alert("Erro na busca: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>vvvvvvvvvv
