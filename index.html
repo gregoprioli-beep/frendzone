@@ -9,10 +9,11 @@
         :root {
             --bg-color: #E5EDF5;
             --card-bg: #FFFFFF;
-            --primary-blue: #B4C6E7;
             --orkut-blue: #4B6C9E;
+            --orkut-light-blue: #F2F5F9;
             --text-color: #333333;
             --border-color: #C0C0C0;
+            --success-green: #2E7D32;
         }
 
         body {
@@ -24,31 +25,29 @@
         }
 
         .container {
-            max-width: 900px;
-            margin: 40px auto;
+            max-width: 1000px;
+            margin: 30px auto;
             padding: 0 20px;
         }
 
-        .hidden {
-            display: none !important;
-        }
+        .hidden { display: none !important; }
 
         /* Header */
         header {
             background-color: var(--orkut-blue);
-            padding: 10px 20px;
+            padding: 12px 20px;
             color: white;
         }
 
         .header-container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        header h1 { margin: 0; font-size: 24px; }
+        header h1 { margin: 0; font-size: 24px; letter-spacing: 1px; }
         header button {
             background: transparent;
             border: none;
@@ -56,80 +55,165 @@
             cursor: pointer;
             font-weight: bold;
             margin-left: 15px;
+            font-size: 14px;
         }
+        header button:hover { text-decoration: underline; }
 
-        /* Cards e Telas */
+        /* Cards Gerais */
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 25px;
+            border-radius: 4px;
+            padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        h2 { color: var(--orkut-blue); margin-top: 0; }
-        .subtitle { color: #777; margin-top: -10px; margin-bottom: 20px; }
+        h2, h3 { color: var(--orkut-blue); margin-top: 0; }
+        .subtitle { color: #777; margin-top: -10px; margin-bottom: 20px; font-size: 14px; }
 
-        /* Formulários */
-        form input {
+        /* Form_Elements */
+        input, textarea, select {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
+            padding: 8px;
+            margin-bottom: 12px;
             border: 1px solid var(--border-color);
             border-radius: 4px;
             box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
 
         .btn-primary {
             background-color: var(--orkut-blue);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
-            width: 100%;
         }
-
         .btn-primary:hover { opacity: 0.9; }
+
         .form-links { margin-top: 15px; display: flex; justify-content: space-between; font-size: 14px; }
         .form-links a { color: var(--orkut-blue); text-decoration: none; }
-        .form-links a:hover { text-decoration: underline; }
 
-        /* Layout do Perfil */
+        /* Layout em Duas Colunas do Perfil */
         .profile-layout {
             display: grid;
-            grid-template-columns: 250px 1fr;
+            grid-template-columns: 260px 1fr;
             gap: 20px;
         }
 
         .profile-sidebar { text-align: center; }
         .profile-avatar {
-            font-size: 80px;
+            font-size: 70px;
             background: #e0e0e0;
-            width: 120px;
-            height: 120px;
-            line-height: 120px;
+            width: 130px;
+            height: 130px;
+            line-height: 130px;
             margin: 0 auto 15px;
-            border-radius: 50%;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
         }
 
-        .status { font-style: italic; color: #555; }
-        .orkut-scraps { background: #F2F5F9; padding: 15px; border-radius: 4px; margin-top: 20px; }
+        .sidebar-menu {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .sidebar-menu button {
+            display: block;
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 8px 10px;
+            text-align: left;
+            color: var(--orkut-blue);
+            cursor: pointer;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 14px;
+        }
+        .sidebar-menu button:hover { background-color: var(--orkut-light-blue); }
 
-        /* Busca */
-        .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
-        .search-box input { margin-bottom: 0; }
-        .search-box button { width: auto; }
-        .results-list { list-style: none; padding: 0; }
-        .results-list li {
-            background: white;
+        /* Sistema de Abas (Tabs) */
+        .tab-box {
+            display: flex;
+            border-bottom: 2px solid var(--orkut-blue);
+            margin-bottom: 15px;
+        }
+        .tab-btn {
+            background: #e0e0e0;
+            border: 1px solid var(--border-color);
+            border-bottom: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #555;
+            margin-right: 4px;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+        .tab-btn.active {
+            background: var(--orkut-blue);
+            color: white;
+            border-color: var(--orkut-blue);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Elementos das Funcionalidades */
+        .post-item, .scrap-item {
+            background: var(--orkut-light-blue);
             padding: 12px;
             border: 1px solid var(--border-color);
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             border-radius: 4px;
         }
+        .post-meta { font-size: 11px; color: #666; margin-bottom: 6px; }
+
+        /* Grid de Álbuns e Fotos */
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .album-card {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: center;
+            background: #fdfdfd;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .album-card:hover { border-color: var(--orkut-blue); }
+        .album-icon { font-size: 40px; }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .photo-gallery img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        /* Messenger Box */
+        .chat-box {
+            border: 1px solid var(--border-color);
+            height: 250px;
+            overflow-y: auto;
+            background: #fafafa;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .chat-msg { margin-bottom: 8px; font-size: 14px; }
+        .chat-msg.me { color: var(--orkut-blue); font-weight: bold; }
     </style>
 </head>
 <body>
@@ -138,8 +222,8 @@
         <div class="header-container">
             <h1 class="logo">FriendZone</h1>
             <nav>
-                <button onclick="navigateTo('profile-screen')">Início</button>
-                <button onclick="navigateTo('search-screen')">Buscar Amigos</button>
+                <button onclick="changeMainScreen('profile-view')">Meu Perfil</button>
+                <button onclick="changeMainScreen('search-friends')">Buscar Amigos</button>
                 <button id="btn-logout">Sair</button>
             </nav>
         </div>
@@ -147,178 +231,454 @@
 
     <main class="container">
         
-        <section id="login-screen" class="card">
+        <section id="screen-login" class="card">
             <h2>Bem-vindo ao FriendZone</h2>
-            <p class="subtitle">A sua nova velha rede social</p>
+            <p class="subtitle">Sua nova velha rede social em uma única página</p>
             <form id="login-form">
                 <input type="text" id="login-username" placeholder="Nome de Usuário" required>
                 <input type="password" id="login-password" placeholder="Senha" required>
                 <button type="submit" class="btn-primary">Entrar</button>
             </form>
             <div class="form-links">
-                <a href="#" onclick="navigateTo('register-screen')">Não tem conta? Cadastre-se</a>
+                <a href="#" onclick="showLoginOrRegister('register')">Não tem conta? Cadastre-se</a>
             </div>
         </section>
 
-        <section id="register-screen" class="card hidden">
-            <h2>Criar uma conta</h2>
+        <section id="screen-register" class="card hidden">
+            <h2>Criar uma conta no FriendZone</h2>
             <form id="register-form">
-                <input type="text" id="register-username" placeholder="Escolha um Nome de Usuário (ex: eder86)" required>
-                <input type="password" id="register-password" placeholder="Senha (mín. 6 caracteres)" required>
-                <button type="submit" class="btn-primary">Cadastrar</button>
+                <input type="text" id="register-username" placeholder="Nome de Usuário (ex: eder86)" required>
+                <input type="password" id="register-password" placeholder="Senha (mín. 4 caracteres)" required>
+                <button type="submit" class="btn-primary">Criar Conta</button>
             </form>
             <div class="form-links">
-                <a href="#" onclick="navigateTo('login-screen')">Já tem conta? Faça Login</a>
+                <a href="#" onclick="showLoginOrRegister('login')">Já tem conta? Faça Login</a>
             </div>
         </section>
 
-        <section id="profile-screen" class="profile-layout hidden">
-            <div class="profile-sidebar card">
-                <div class="profile-avatar">👤</div>
-                <h3 id="profile-name">Carregando...</h3>
-                <p id="profile-status" class="status">"Sorte do dia: O amor está no ar."</p>
-            </div>
+        <div id="screen-dashboard" class="profile-layout hidden">
             
-            <div class="profile-main card">
-                <h2>Meu Perfil</h2>
-                <div class="orkut-scraps">
-                    <h3>Recados (Scraps)</h3>
-                    <p>Deixe um recado para os seus amigos aqui!</p>
+            <aside class="profile-sidebar card">
+                <div class="profile-avatar">👤</div>
+                <h3 id="sidebar-display-name">@usuario</h3>
+                <p id="sidebar-status" class="status">"Sorte do dia: Código limpo é vida."</p>
+                
+                <div class="sidebar-menu">
+                    <button onclick="changeMainScreen('profile-view')">🏠 Linha do Tempo</button>
+                    <button onclick="changeMainScreen('albums-view')">📸 Meus Álbuns</button>
+                    <button onclick="changeMainScreen('edit-profile-view')">⚙️ Editar Perfil & Priv.</button>
+                    <button onclick="changeMainScreen('messenger-view')">💬 Messenger Interno</button>
+                    <button onclick="changeMainScreen('search-friends')">🔍 Procurar Membros</button>
                 </div>
-            </div>
-        </section>
+            </aside>
 
-        <section id="search-screen" class="card hidden">
-            <h2>Procurar Amigos</h2>
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="Digite o nome do usuário...">
-                <button id="btn-search" class="btn-primary">Buscar</button>
-            </div>
-            <ul id="search-results" class="results-list"></ul>
-        </section>
+            <section class="profile-main">
+                
+                <div id="sub-profile-view" class="main-sub-screen">
+                    <div class="card">
+                        <h2>Linha do Tempo</h2>
+                        <form id="timeline-form">
+                            <textarea id="timeline-text" rows="2" placeholder="O que você está pensando hoje?" required></textarea>
+                            <button type="submit" class="btn-primary">Postar</button>
+                        </form>
+                        <div id="timeline-posts" style="margin-top: 20px;"></div>
+                    </div>
+                </div>
 
+                <div id="sub-albums-view" class="main-sub-screen hidden">
+                    <div class="card">
+                        <h2>Meus Álbuns de Fotos</h2>
+                        <div style="background: #F2F5F9; padding: 12px; border-radius: 4px; margin-bottom: 15px;">
+                            <h3>Criar Novo Álbum</h3>
+                            <div style="display:flex; gap:10px;">
+                                <input type="text" id="new-album-name" placeholder="Nome do álbum (ex: Praia 2026)" style="margin-bottom:0;">
+                                <button onclick="criarAlbum()" class="btn-primary">Criar</button>
+                            </div>
+                        </div>
+
+                        <div id="box-album-list">
+                            <h3>Álbuns Disponíveis</h3>
+                            <div id="grid-albuns" class="album-grid"></div>
+                        </div>
+
+                        <div id="box-inside-album" class="hidden">
+                            <button onclick="voltarParaAlbuns()" style="margin-bottom: 10px;">⬅ Voltar aos álbuns</button>
+                            <h3 id="opened-album-title">Nome do Álbum</h3>
+                            
+                            <div style="background: #eef; padding: 10px; margin-bottom: 15px; border-radius:4px;">
+                                <h4>Adicionar Foto a este Álbum</h4>
+                                <input type="file" id="file-photo-input" accept="image/*">
+                            </div>
+                            <div id="gallery-photos" class="photo-gallery"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sub-edit-profile-view" class="main-sub-screen hidden">
+                    <div class="card">
+                        <div class="tab-box">
+                            <button class="tab-btn active" onclick="switchTab(event, 'tab-bio')">Perfil & Bio</button>
+                            <button class="tab-btn" onclick="switchTab(event, 'tab-privacy')">Privacidade</button>
+                            <button class="tab-btn" onclick="switchTab(event, 'tab-config')">Configurações</button>
+                        </div>
+
+                        <div id="tab-bio" class="tab-content active">
+                            <h3>Editar Informações Pessoais</h3>
+                            <label>Frase de Status:</label>
+                            <input type="text" id="edit-status" placeholder="Sua frase do topo">
+                            <label>Quem sou eu (Bio):</label>
+                            <textarea id="edit-bio" rows="4" placeholder="Escreva sobre você..."></textarea>
+                            <button onclick="salvarPerfilBio()" class="btn-primary">Salvar Perfil</button>
+                        </div>
+
+                        <div id="tab-privacy" class="tab-content">
+                            <h3>Configurações de Privacidade</h3>
+                            <label>Quem pode ver meus álbuns?</label>
+                            <select id="priv-albums">
+                                <option value="all">Todos os usuários</option>
+                                <option value="friends">Apenas amigos</option>
+                                <option value="me">Somente eu</option>
+                            </select>
+                            <label>Exibir meu status de conexão online?</label>
+                            <select id="priv-status">
+                                <option value="yes">Sim, mostrar</option>
+                                <option value="no">Não, ocultar</option>
+                            </select>
+                            <button onclick="alert('Configurações de privacidade salvas!')" class="btn-primary">Aplicar Privacidade</button>
+                        </div>
+
+                        <div id="tab-config" class="tab-content">
+                            <h3>Configurações da Conta</h3>
+                            <label>Idioma da Interface:</label>
+                            <select>
+                                <option>Português (BR)</option>
+                                <option>English</option>
+                            </select>
+                            <label>Notificações por Som:</label>
+                            <input type="checkbox" checked style="width:auto; margin-bottom:20px;"> Ativar sons de mensagens<br>
+                            <button onclick="alert('Definições gerais atualizadas!')" class="btn-primary">Salvar Definições</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sub-messenger-view" class="main-sub-screen hidden">
+                    <div class="card">
+                        <h2>Messenger Interno</h2>
+                        <p class="subtitle">Envie mensagens em tempo real para os membros do site</p>
+                        <div class="chat-box" id="chat-messages-box">
+                            <div class="chat-msg">💡 <i>Dica: Envie uma mensagem fictícia para simular o bate-papo!</i></div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="chat-input-text" placeholder="Digite sua mensagem..." style="margin-bottom:0;">
+                            <button onclick="enviarMensagemChat()" class="btn-primary">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sub-search-friends" class="main-sub-screen hidden">
+                    <div class="card">
+                        <h2>Procurar Usuários</h2>
+                        <div style="display:flex; gap:10px;">
+                            <input type="text" id="search-input" placeholder="Procure por usuários cadastrados..." style="margin-bottom:0;">
+                            <button onclick="executarBusca()" class="btn-primary">Buscar</button>
+                        </div>
+                        <ul id="search-results" class="results-list" style="padding-left:0; list-style:none; margin-top:15px;"></ul>
+                    </div>
+                </div>
+
+            </section>
+        </div>
     </main>
 
     <script>
-        // Inicializa o banco de dados local caso esteja vazio com alguns perfis de exemplo
-        if (!localStorage.getItem('fz_users')) {
-            const usuariosIniciais = {
-                "eder86": { password: "123" },
-                "adilson_silva": { password: "123" },
-                "mariah_reis": { password: "123" },
-                "edilene_amor": { password: "123" }
+        // Banco Inicial de Dados persistido no LocalStorage
+        if (!localStorage.getItem('fz_data')) {
+            const dadosIniciais = {
+                users: {
+                    "eder86": { password: "123", bio: "Criador do FriendZone", status: "Sorte do dia: O amor está no ar", posts: [], albums: {} },
+                    "edilene_amor": { password: "123", bio: "Apaixonada por fotografia", status: "Tudo flui", posts: [], albums: {} }
+                }
             };
-            localStorage.setItem('fz_users', JSON.stringify(usuariosIniciais));
+            localStorage.setItem('fz_data', JSON.stringify(dadosIniciais));
         }
 
-        // Sistema de Navegação entre telas (SPA)
-        window.navigateTo = function(screenId) {
-            const screens = ['login-screen', 'register-screen', 'profile-screen', 'search-screen'];
-            screens.forEach(screen => {
-                document.getElementById(screen).classList.add('hidden');
-            });
-            document.getElementById(screenId).classList.remove('hidden');
+        let usuarioLogado = null;
+        let albumAtualAberto = null;
+
+        // Gerenciador de Exibição Login vs Cadastro
+        function showLoginOrRegister(mode) {
+            if(mode === 'register') {
+                document.getElementById('screen-login').classList.add('hidden');
+                document.getElementById('screen-register').classList.remove('hidden');
+            } else {
+                document.getElementById('screen-register').classList.add('hidden');
+                document.getElementById('screen-login').classList.remove('hidden');
+            }
         }
 
-        // Verifica se já existe um usuário logado no navegador ao carregar a página
-        function checarSessao() {
-            const usuarioLogado = localStorage.getItem('fz_current_user');
-            const header = document.getElementById('main-header');
+        // Sistema Global SPA para trocar sub-telas do menu lateral
+        window.changeMainScreen = function(targetSubScreen) {
+            const subs = ['sub-profile-view', 'sub-albums-view', 'sub-edit-profile-view', 'sub-messenger-view', 'sub-search-friends'];
+            subs.forEach(s => document.getElementById(s).classList.add('hidden'));
+            document.getElementById(`sub-${targetSubScreen}`).classList.remove('hidden');
             
+            // Renderizações condicionais rápidas
+            if (targetSubScreen === 'profile-view') renderTimeline();
+            if (targetSubScreen === 'albums-view') renderListaAlbuns();
+        }
+
+        // Sistema de Tabs na aba de Configurações
+        window.switchTab = function(evt, tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(c => c.classList.remove('active'));
+            
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Checagem de Sessão Ativa
+        function inicializarApp() {
+            usuarioLogado = localStorage.getItem('fz_session');
+            const header = document.getElementById('main-header');
+            const loginBox = document.getElementById('screen-login');
+            const regBox = document.getElementById('screen-register');
+            const dashboard = document.getElementById('screen-dashboard');
+
             if (usuarioLogado) {
                 header.classList.remove('hidden');
-                document.getElementById('profile-name').innerText = usuarioLogado;
-                navigateTo('profile-screen');
+                loginBox.classList.add('hidden');
+                regBox.classList.add('hidden');
+                dashboard.classList.remove('hidden');
+                
+                // Atualiza Sidebar fixa
+                const db = JSON.parse(localStorage.getItem('fz_data'));
+                document.getElementById('sidebar-display-name').innerText = `👤 ${usuarioLogado}`;
+                document.getElementById('sidebar-status').innerText = `"${db.users[usuarioLogado].status || ''}"`;
+                
+                changeMainScreen('profile-view');
             } else {
                 header.classList.add('hidden');
-                navigateTo('login-screen');
+                dashboard.classList.add('hidden');
+                loginBox.classList.remove('hidden');
             }
         }
 
-        // Processo de Cadastro
+        // Cadastro
         document.getElementById('register-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            const username = document.getElementById('register-username').value.trim().toLowerCase();
-            const password = document.getElementById('register-password').value;
+            const user = document.getElementById('register-username').value.trim().toLowerCase();
+            const pass = document.getElementById('register-password').value;
 
-            if (username.length < 3 || password.length < 4) {
-                alert("O usuário deve ter ao menos 3 caracteres e a senha 4 caracteres.");
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            if(db.users[user]) {
+                alert("Usuário já existente!");
                 return;
             }
 
-            const usuarios = JSON.parse(localStorage.getItem('fz_users'));
-
-            // Verifica se o usuário já existe no sistema
-            if (usuarios[username]) {
-                alert("Este nome de usuário já está sendo utilizado.");
-                return;
-            }
-
-            // Salva o novo usuário no banco do navegador
-            usuarios[username] = { password: password };
-            localStorage.setItem('fz_users', JSON.stringify(usuarios));
-
-            // Loga o usuário automaticamente após se cadastrar
-            localStorage.setItem('fz_current_user', username);
-            alert(`Usuário "${username}" criado com sucesso!`);
-            document.getElementById('register-form').reset();
-            checarSessao();
+            db.users[user] = { password: pass, bio: "", status: "Olá mundo!", posts: [], albums: {} };
+            localStorage.setItem('fz_data', JSON.stringify(db));
+            localStorage.setItem('fz_session', user);
+            alert("Sua conta foi criada!");
+            inicializarApp();
         });
 
-        // Processo de Login
+        // Login
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            const username = document.getElementById('login-username').value.trim().toLowerCase();
-            const password = document.getElementById('login-password').value;
+            const user = document.getElementById('login-username').value.trim().toLowerCase();
+            const pass = document.getElementById('login-password').value;
 
-            const usuarios = JSON.parse(localStorage.getItem('fz_users'));
-
-            // Valida as credenciais locais
-            if (usuarios[username] && usuarios[username].password === password) {
-                localStorage.setItem('fz_current_user', username);
-                checarSessao();
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            if(db.users[user] && db.users[user].password === pass) {
+                localStorage.setItem('fz_session', user);
+                inicializarApp();
             } else {
-                alert("Usuário ou senha incorretos.");
+                alert("Credenciais incorretas!");
             }
         });
 
-        // Botão Desconectar (Sair)
+        // Logout
         document.getElementById('btn-logout').addEventListener('click', () => {
-            localStorage.removeItem('fz_current_user');
-            checarSessao();
+            localStorage.removeItem('fz_session');
+            inicializarApp();
         });
 
-        // Mecanismo de Busca de Amigos
-        document.getElementById('btn-search').addEventListener('click', () => {
-            const searchTerm = document.getElementById('search-input').value.trim().toLowerCase();
-            const resultsContainer = document.getElementById('search-results');
-            resultsContainer.innerHTML = "";
-
-            if (!searchTerm) {
-                resultsContainer.innerHTML = "<li>Por favor, digite um nome para pesquisar.</li>";
-                return;
-            }
-
-            const usuarios = JSON.parse(localStorage.getItem('fz_users'));
-            const listaUsuarios = Object.keys(usuarios);
-
-            // Filtra os usuários cadastrados que contêm o termo digitado
-            const resultados = listaUsuarios.filter(user => user.includes(searchTerm));
-
-            if (resultados.length === 0) {
-                resultsContainer.innerHTML = "<li>Nenhum usuário correspondente encontrado.</li>";
-                return;
-            }
-
-            resultados.forEach(user => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>👤 ${user}</strong> — Ver Perfil (Em breve)`;
-                resultsContainer.appendChild(li);
+        /* --- LOGICA DA TIMELINE --- */
+        document.getElementById('timeline-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const txt = document.getElementById('timeline-text').value;
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            
+            db.users[usuarioLogado].posts.unshift({
+                conteudo: txt,
+                dataHora: new Date().toLocaleString('pt-BR')
             });
+            
+            localStorage.setItem('fz_data', JSON.stringify(db));
+            document.getElementById('timeline-form').reset();
+            renderTimeline();
         });
 
-        // Executa a checagem inicial ao abrir o arquivo
-        checarSessao();
+        function renderTimeline() {
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            const container = document.getElementById('timeline-posts');
+            container.innerHTML = "";
+            const posts = db.users[usuarioLogado].posts || [];
+            
+            if(posts.length === 0) {
+                container.innerHTML = "<p style='color:#666;'>Nenhuma publicação ainda.</p>";
+                return;
+            }
+
+            posts.forEach(p => {
+                const div = document.createElement('div');
+                div.className = "post-item";
+                div.innerHTML = `<div class="post-meta">Postado em: ${p.dataHora}</div><div>${p.conteudo}</div>`;
+                container.appendChild(div);
+            });
+        }
+
+        /* --- LÓGICA DE ÁLBUNS & FOTOS --- */
+        window.criarAlbum = function() {
+            const nomeAlbum = document.getElementById('new-album-name').value.trim();
+            if(!nomeAlbum) return;
+
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            if(!db.users[usuarioLogado].albums) db.users[usuarioLogado].albums = {};
+            
+            db.users[usuarioLogado].albums[nomeAlbum] = [];
+            localStorage.setItem('fz_data', JSON.stringify(db));
+            document.getElementById('new-album-name').value = "";
+            renderListaAlbuns();
+        }
+
+        function renderListaAlbuns() {
+            document.getElementById('box-album-list').classList.remove('hidden');
+            document.getElementById('box-inside-album').classList.add('hidden');
+            
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            const container = document.getElementById('grid-albuns');
+            container.innerHTML = "";
+            
+            const albuns = db.users[usuarioLogado].albums || {};
+            const chaves = Object.keys(albuns);
+
+            if(chaves.length === 0) {
+                container.innerHTML = "<p style='color:#666; grid-column: 1/-1;'>Nenhum álbum criado.</p>";
+                return;
+            }
+
+            chaves.forEach(nome => {
+                const div = document.createElement('div');
+                div.className = "album-card";
+                div.onclick = () => abrirAlbum(nome);
+                div.innerHTML = `<div class="album-icon">📁</div><strong>${nome}</strong><br><small>${albuns[nome].length} fotos</small>`;
+                container.appendChild(div);
+            });
+        }
+
+        function abrirAlbum(nome) {
+            albumAtualAberto = nome;
+            document.getElementById('box-album-list').classList.add('hidden');
+            document.getElementById('box-inside-album').classList.remove('hidden');
+            document.getElementById('opened-album-title').innerText = `Álbum: ${nome}`;
+            renderFotosDoAlbum();
+        }
+
+        window.voltarParaAlbuns = function() {
+            albumAtualAberto = null;
+            renderListaAlbuns();
+        }
+
+        // Converte a imagem adicionada para Base64 para armazenar no LocalStorage
+        document.getElementById('file-photo-input').addEventListener('change', function(e) {
+            const arquivo = e.target.files[0];
+            if (!arquivo || !albumAtualAberto) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const base64Img = evt.target.result;
+                const db = JSON.parse(localStorage.getItem('fz_data'));
+                
+                db.users[usuarioLogado].albums[albumAtualAberto].push(base64Img);
+                localStorage.setItem('fz_data', JSON.stringify(db));
+                
+                document.getElementById('file-photo-input').value = "";
+                renderFotosDoAlbum();
+            };
+            reader.readAsDataURL(arquivo);
+        });
+
+        function renderFotosDoAlbum() {
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            const container = document.getElementById('gallery-photos');
+            container.innerHTML = "";
+            
+            const fotos = db.users[usuarioLogado].albums[albumAtualAberto] || [];
+            if(fotos.length === 0) {
+                container.innerHTML = "<p style='color:#666;'>Este álbum não tem fotos ainda.</p>";
+                return;
+            }
+
+            fotos.forEach(src => {
+                const img = document.createElement('img');
+                img.src = src;
+                container.appendChild(img);
+            });
+        }
+
+        /* --- SALVAR BIO E STATUS --- */
+        window.salvarPerfilBio = function() {
+            const status = document.getElementById('edit-status').value;
+            const bio = document.getElementById('edit-bio').value;
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+
+            db.users[usuarioLogado].status = status;
+            db.users[usuarioLogado].bio = bio;
+
+            localStorage.setItem('fz_data', JSON.stringify(db));
+            alert("Informações salvas!");
+            inicializarApp();
+        }
+
+        /* --- MESSENGER SIMULADO --- */
+        window.enviarMensagemChat = function() {
+            const campo = document.getElementById('chat-input-text');
+            const m = campo.value.trim();
+            if(!m) return;
+
+            const box = document.getElementById('chat-messages-box');
+            box.innerHTML += `<div class="chat-msg me">Você: <span style="font-weight:normal; color:#333;">${m}</span></div>`;
+            campo.value = "";
+            box.scrollTop = box.scrollHeight;
+        }
+
+        /* --- BUSCA DE MEMBROS --- */
+        window.executarBusca = function() {
+            const termo = document.getElementById('search-input').value.trim().toLowerCase();
+            const container = document.getElementById('search-results');
+            container.innerHTML = "";
+
+            if(!termo) return;
+            const db = JSON.parse(localStorage.getItem('fz_data'));
+            const users = Object.keys(db.users);
+
+            const filtrados = users.filter(u => u.includes(termo));
+            if(filtrados.length === 0) {
+                container.innerHTML = "<li>Nenhum usuário encontrado.</li>";
+                return;
+            }
+
+            filtrados.forEach(u => {
+                container.innerHTML += `<li style="background:#fff; padding:8px; border:1px solid #ccc; margin-bottom:4px; border-radius:4px;">👤 <b>${u}</b> - ${db.users[u].bio || 'Sem bio'}</li>`;
+            });
+        }
+
+        // Execução Inicial
+        inicializarApp();
     </script>
 </body>
 </html>
