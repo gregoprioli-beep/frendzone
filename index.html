@@ -183,14 +183,13 @@
                 <h2>Meu Perfil</h2>
                 <div class="orkut-scraps">
                     <h3>Recados (Scraps)</h3>
-                    <p>Funcionalidade em desenvolvimento! Deixe seu depoimento em breve.</p>
+                    <p>Deixe um recado para os seus amigos aqui!</p>
                 </div>
             </div>
         </section>
 
         <section id="search-screen" class="card hidden">
             <h2>Procurar Amigos</h2>
-            <p style="font-size: 13px; color: #666;">Nota: Sistema de busca local temporário (sem Firestore para evitar erros de permissão).</p>
             <div class="search-box">
                 <input type="text" id="search-input" placeholder="Digite o nome do usuário...">
                 <button id="btn-search" class="btn-primary">Buscar</button>
@@ -200,29 +199,19 @@
 
     </main>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    <script>
+        // Inicializa o banco de dados local caso esteja vazio com alguns perfis de exemplo
+        if (!localStorage.getItem('fz_users')) {
+            const usuariosIniciais = {
+                "eder86": { password: "123" },
+                "adilson_silva": { password: "123" },
+                "mariah_reis": { password: "123" },
+                "edilene_amor": { password: "123" }
+            };
+            localStorage.setItem('fz_users', JSON.stringify(usuariosIniciais));
+        }
 
-        // Suas credenciais oficiais do Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCDddrDWE7Ss0pZLY3MQbSxbR_Z492L2Tw",
-            authDomain: "frendzone.firebaseapp.com",
-            databaseURL: "https://frendzone-default-rtdb.firebaseio.com",
-            projectId: "frendzone",
-            storageBucket: "frendzone.firebasestorage.app",
-            messagingSenderId: "200315585733",
-            appId: "1:200315585733:web:8481d150ecae8b04c21cac"
-        };
-
-        // Inicializa o Firebase apenas com Auth para evitar erros de banco de dados
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Simulação de banco local para busca rápida (evita mexer no Firestore do console)
-        const bancoLocalUsuarios = ["eder86", "adilson_silva", "mariah_reis", "felipe_melo", "edilene_amor"];
-
-        // Sistema Global de Navegação (SPA)
+        // Sistema de Navegação entre telas (SPA)
         window.navigateTo = function(screenId) {
             const screens = ['login-screen', 'register-screen', 'profile-screen', 'search-screen'];
             screens.forEach(screen => {
@@ -231,97 +220,105 @@
             document.getElementById(screenId).classList.remove('hidden');
         }
 
-        // Monitora o estado de login do usuário
-        onAuthStateChanged(auth, (user) => {
+        // Verifica se já existe um usuário logado no navegador ao carregar a página
+        function checarSessao() {
+            const usuarioLogado = localStorage.getItem('fz_current_user');
             const header = document.getElementById('main-header');
-            if (user) {
+            
+            if (usuarioLogado) {
                 header.classList.remove('hidden');
-                
-                // Extrai o nome de usuário original retirando o sufixo do e-mail falso
-                const usernameOriginal = user.email.split('@')[0];
-                document.getElementById('profile-name').innerText = usernameOriginal;
-                
+                document.getElementById('profile-name').innerText = usuarioLogado;
                 navigateTo('profile-screen');
             } else {
                 header.classList.add('hidden');
                 navigateTo('login-screen');
             }
-        });
+        }
 
-        // Cadastro de Usuário (Tratando Usuário como E-mail mascarado)
-        document.getElementById('register-form').addEventListener('submit', async (e) => {
+        // Processo de Cadastro
+        document.getElementById('register-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const username = document.getElementById('register-username').value.trim().toLowerCase();
             const password = document.getElementById('register-password').value;
 
-            // Mascara o usuário para o formato que o Firebase exige
-            const emailMascarado = `${username}@friendzone.com`;
-
-            try {
-                await createUserWithEmailAndPassword(auth, emailMascarado, password);
-                
-                // Adiciona na nossa lista de busca local para testes rápidos
-                if(!bancoLocalUsuarios.includes(username)) {
-                    bancoLocalUsuarios.push(username);
-                }
-
-                alert(`Usuário "${username}" cadastrado com sucesso!`);
-                document.getElementById('register-form').reset();
-            } catch (error) {
-                if (error.code === 'auth/configuration-not-found') {
-                    alert("Erro: Você ainda precisa ativar o método 'E-mail/Senha' lá no menu Authentication do seu Firebase.");
-                } else {
-                    alert("Erro ao cadastrar: " + error.message);
-                }
+            if (username.length < 3 || password.length < 4) {
+                alert("O usuário deve ter ao menos 3 caracteres e a senha 4 caracteres.");
+                return;
             }
+
+            const usuarios = JSON.parse(localStorage.getItem('fz_users'));
+
+            // Verifica se o usuário já existe no sistema
+            if (usuarios[username]) {
+                alert("Este nome de usuário já está sendo utilizado.");
+                return;
+            }
+
+            // Salva o novo usuário no banco do navegador
+            usuarios[username] = { password: password };
+            localStorage.setItem('fz_users', JSON.stringify(usuarios));
+
+            // Loga o usuário automaticamente após se cadastrar
+            localStorage.setItem('fz_current_user', username);
+            alert(`Usuário "${username}" criado com sucesso!`);
+            document.getElementById('register-form').reset();
+            checarSessao();
         });
 
-        // Login de Usuário
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
+        // Processo de Login
+        document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const username = document.getElementById('login-username').value.trim().toLowerCase();
             const password = document.getElementById('login-password').value;
 
-            // Mascara novamente para realizar o login
-            const emailMascarado = `${username}@friendzone.com`;
+            const usuarios = JSON.parse(localStorage.getItem('fz_users'));
 
-            try {
-                await signInWithEmailAndPassword(auth, emailMascarado, password);
-            } catch (error) {
-                alert("Erro ao entrar: Usuário ou senha incorretos.");
+            // Valida as credenciais locais
+            if (usuarios[username] && usuarios[username].password === password) {
+                localStorage.setItem('fz_current_user', username);
+                checarSessao();
+            } else {
+                alert("Usuário ou senha incorretos.");
             }
         });
 
-        // Botão Sair (Logout)
+        // Botão Desconectar (Sair)
         document.getElementById('btn-logout').addEventListener('click', () => {
-            signOut(auth);
+            localStorage.removeItem('fz_current_user');
+            checarSessao();
         });
 
-        // Busca de Usuários (Feita localmente para evitar erros de regras do Firestore)
+        // Mecanismo de Busca de Amigos
         document.getElementById('btn-search').addEventListener('click', () => {
             const searchTerm = document.getElementById('search-input').value.trim().toLowerCase();
             const resultsContainer = document.getElementById('search-results');
             resultsContainer.innerHTML = "";
 
             if (!searchTerm) {
-                resultsContainer.innerHTML = "<li>Digite um termo para pesquisar.</li>";
+                resultsContainer.innerHTML = "<li>Por favor, digite um nome para pesquisar.</li>";
                 return;
             }
 
-            // Filtra os usuários cadastrados localmente
-            const resultados = bancoLocalUsuarios.filter(user => user.includes(searchTerm));
+            const usuarios = JSON.parse(localStorage.getItem('fz_users'));
+            const listaUsuarios = Object.keys(usuarios);
+
+            // Filtra os usuários cadastrados que contêm o termo digitado
+            const resultados = listaUsuarios.filter(user => user.includes(searchTerm));
 
             if (resultados.length === 0) {
-                resultsContainer.innerHTML = "<li>Nenhum usuário encontrado.</li>";
+                resultsContainer.innerHTML = "<li>Nenhum usuário correspondente encontrado.</li>";
                 return;
             }
 
             resultados.forEach(user => {
                 const li = document.createElement('li');
-                li.innerHTML = `<strong>👤 ${user}</strong> — Enviar recado (Em breve)`;
+                li.innerHTML = `<strong>👤 ${user}</strong> — Ver Perfil (Em breve)`;
                 resultsContainer.appendChild(li);
             });
         });
+
+        // Executa a checagem inicial ao abrir o arquivo
+        checarSessao();
     </script>
 </body>
 </html>
